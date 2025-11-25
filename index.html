@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ConnectHub - Social Platform</title>
+  <title>ConnectHub - Dashboard</title>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
@@ -27,10 +27,35 @@
       padding-bottom: 2rem;
     }
     
+    .navbar {
+      box-shadow: 0 2px 10px rgba(0,0,0,.1);
+    }
+    
+    .sidebar {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      position: sticky;
+      top: 80px;
+    }
+    
+    .main-content {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
     .card {
       box-shadow: 0 4px 12px rgba(0,0,0,.1);
       border: none;
       transition: transform 0.2s, box-shadow 0.2s;
+      margin-bottom: 1.5rem;
+      border-radius: 12px;
+      overflow: hidden;
     }
     
     .card:hover {
@@ -128,160 +153,425 @@
       border-radius: 6px;
       font-weight: 500;
       font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      margin-right: 8px;
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    
+    .post-image {
+      width: 100%;
+      border-radius: 8px;
+      margin: 10px 0;
+      max-height: 500px;
+      object-fit: cover;
+    }
+    
+    .post-video {
+      width: 100%;
+      border-radius: 8px;
+      margin: 10px 0;
+      max-height: 500px;
+    }
+    
+    .action-btn {
+      background: none;
+      border: none;
+      color: var(--secondary);
+      font-size: 1.2rem;
+      margin-right: 15px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    
+    .action-btn:hover {
+      color: var(--primary);
+    }
+    
+    .action-btn.liked {
+      color: var(--danger);
+    }
+    
+    .suggestion-card {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .suggestion-card:last-child {
+      border-bottom: none;
+    }
+    
+    .suggestion-info {
+      flex-grow: 1;
+      margin-left: 10px;
+    }
+    
+    .suggestion-username {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    
+    .suggestion-fullname {
+      color: var(--secondary);
+      font-size: 0.8rem;
+    }
+    
+    .btn-follow {
+      font-size: 0.8rem;
+      padding: 4px 12px;
+    }
+    
+    .story-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding: 10px 0;
+    }
+    
+    .story-item {
+      flex: 0 0 auto;
+      width: 70px;
+      text-align: center;
+    }
+    
+    .story-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+      padding: 2px;
+      margin-bottom: 5px;
+    }
+    
+    .story-avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--dark);
+    }
+    
+    .story-username {
+      font-size: 0.7rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .new-story {
+      background: var(--primary);
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+
+    .media-preview-item {
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .media-preview-item img,
+    .media-preview-item video {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .remove-media-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: rgba(220, 53, 69, 0.9);
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .upload-progress {
+      height: 4px;
+      background: #e9ecef;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+
+    .upload-progress-bar {
+      height: 100%;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .media-type-badge {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
     }
   </style>
 </head>
 <body>
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
     <div class="container">
-      <a class="navbar-brand" href="#"><i class="fas fa-users me-2"></i>ConnectHub</a>
+      <a class="navbar-brand" href="index.html"><i class="fas fa-users me-2"></i>ConnectHub</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav me-auto">
           <li class="nav-item">
-            <a class="nav-link active" href="#users-section"><i class="fas fa-user me-1"></i> Users</a>
+            <a class="nav-link active" href="index.html"><i class="fas fa-home me-1"></i> Home</a>
           </li>
+        
           <li class="nav-item">
-            <a class="nav-link" href="#posts-section"><i class="fas fa-file-alt me-1"></i> Posts</a>
+            <a class="nav-link" href="#" id="profileLink"><i class="fas fa-user-circle me-1"></i> Profile</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#follow-section"><i class="fas fa-link me-1"></i> Follow</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#comments-section"><i class="fas fa-comments me-1"></i> Comments</a>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+              <div class="user-avatar" id="navbarAvatar">U</div>
+              <span id="navbarUsername">User</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#" id="profileDropdownLink"><i class="fas fa-user me-2"></i> Profile</a></li>
+              <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#" id="logoutLink"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+            </ul>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <div class="container">
-    <!-- Header -->
-    <div class="row mb-4">
-      <div class="col-12 text-center">
-        <h1 class="display-4 fw-bold text-primary">ConnectHub</h1>
-        <p class="lead">Your social platform for connecting with friends and sharing moments</p>
+  <div class="container mt-4">
+    <div class="row">
+      <!-- Left Sidebar -->
+      <div class="col-lg-3 d-none d-lg-block">
+        <div class="sidebar">
+          <div class="d-flex align-items-center mb-3">
+            <div class="user-avatar" id="sidebarAvatar">U</div>
+            <div>
+              <div class="fw-bold" id="sidebarUsername">Username</div>
+              <small class="text-muted" id="sidebarFullname">Full Name</small>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <div class="text-center">
+              <div class="fw-bold" id="postsCount">0</div>
+              <small class="text-muted">Posts</small>
+            </div>
+            <div class="text-center">
+              <div class="fw-bold" id="followersCount">0</div>
+              <small class="text-muted">Followers</small>
+            </div>
+            <div class="text-center">
+              <div class="fw-bold" id="followingCount">0</div>
+              <small class="text-muted">Following</small>
+            </div>
+          </div>
+          <a href="#" class="btn btn-outline-primary btn-sm w-100" id="editProfileBtn">
+            <i class="fas fa-edit me-1"></i> Edit Profile
+          </a>
+        </div>
+        
+        <div class="sidebar">
+          <h6 class="fw-bold mb-3">Suggestions for you</h6>
+          <div id="suggestionsList">
+            <!-- Suggestions will be loaded here -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- Main Content -->
+      <div class="col-lg-6">
+        <!-- Create Post -->
+        <div class="main-content">
+          <div class="d-flex align-items-center mb-3">
+            <div class="user-avatar" id="createPostAvatar">U</div>
+            <input type="text" class="form-control ms-3" id="postContentInput" placeholder="What's on your mind?" readonly>
+            <button class="btn btn-primary ms-2" id="createPostBtn">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+          
+          <div class="d-flex justify-content-around border-top pt-2">
+            <button class="btn btn-sm text-muted" id="addPhotoBtn">
+              <i class="fas fa-image me-1"></i> Photo
+            </button>
+            <button class="btn btn-sm text-muted" id="addVideoBtn">
+              <i class="fas fa-video me-1"></i> Video
+            </button>
+            <button class="btn btn-sm text-muted" id="addLocationBtn">
+              <i class="fas fa-map-marker-alt me-1"></i> Location
+            </button>
+            <button class="btn btn-sm text-muted" id="addMoodBtn">
+              <i class="fas fa-smile me-1"></i> Mood
+            </button>
+          </div>
+        </div>
+        
+        <!-- Stories -->
+        <div class="main-content">
+          <div class="story-container" id="storiesContainer">
+            <!-- Stories will be loaded here -->
+          </div>
+        </div>
+        
+        <!-- Posts Feed -->
+        <div id="postsFeed">
+          <!-- Posts will be loaded here -->
+        </div>
+      </div>
+      
+      <!-- Right Sidebar -->
+      <div class="col-lg-3 d-none d-lg-block">
+        <div class="sidebar">
+          <h6 class="fw-bold mb-3">Trending Topics</h6>
+          <div class="mb-2">
+            <a href="#" class="text-decoration-none">
+              <span class="badge bg-primary me-1">#</span>Technology
+            </a>
+          </div>
+          <div class="mb-2">
+            <a href="#" class="text-decoration-none">
+              <span class="badge bg-primary me-1">#</span>Travel
+            </a>
+          </div>
+          <div class="mb-2">
+            <a href="#" class="text-decoration-none">
+              <span class="badge bg-primary me-1">#</span>Food
+            </a>
+          </div>
+          <div class="mb-2">
+            <a href="#" class="text-decoration-none">
+              <span class="badge bg-primary me-1">#</span>Fashion
+            </a>
+          </div>
+          <div class="mb-2">
+            <a href="#" class="text-decoration-none">
+              <span class="badge bg-primary me-1">#</span>Sports
+            </a>
+          </div>
+        </div>
+        
+        <div class="sidebar">
+          <h6 class="fw-bold mb-3">Online Friends</h6>
+          <div id="onlineFriendsList">
+            <!-- Online friends will be loaded here -->
+          </div>
+        </div>
       </div>
     </div>
+  </div>
 
-    <!-- Main Content -->
-    <div class="row g-4">
-      <!-- Users Management -->
-      <div class="col-lg-6" id="users-section">
-        <div class="card h-100">
-          <div class="card-header bg-primary text-white">
-            <h3 class="mb-0"><i class="fas fa-users me-2"></i>Users Management</h3>
+  <!-- Create Post Modal -->
+  <div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createPostModalLabel">Create Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex mb-3">
+            <div class="user-avatar" id="modalAvatar">U</div>
+            <div class="ms-3">
+              <div class="fw-bold" id="modalUsername">Username</div>
+              <select class="form-select form-select-sm w-auto" id="postVisibility">
+                <option value="public" selected>Public</option>
+                <option value="friends">Friends</option>
+                <option value="private">Only Me</option>
+              </select>
+            </div>
           </div>
-          <div class="card-body">
-            <form id="userForm">
-              <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" placeholder="Enter username" required>
-              </div>
-              <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter email" required>
-              </div>
-              <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter password" required>
-              </div>
-              <button type="submit" class="btn btn-success w-100">
-                <i class="fas fa-user-plus me-1"></i> Create User
-              </button>
-            </form>
-            
-            <div class="section-title mt-4">Registered Users</div>
-            <div id="usersLoading" class="loading">Loading users...</div>
-            <div id="users" class="mt-2"></div>
+          
+          <textarea class="form-control" id="modalPostContent" rows="4" placeholder="What's on your mind?"></textarea>
+          
+          <!-- Media Preview -->
+          <div id="mediaPreview" class="mt-3" style="display: none;">
+            <h6 class="fw-bold mb-2">Media Preview</h6>
+            <div id="mediaPreviewContainer">
+              <!-- Media previews will be added here -->
+            </div>
+            <div class="upload-progress" id="uploadProgress" style="display: none;">
+              <div class="upload-progress-bar" id="uploadProgressBar" style="width: 0%"></div>
+            </div>
+          </div>
+          
+          <!-- Mood Input -->
+          <div class="mt-3" id="moodSection" style="display: none;">
+            <label class="form-label">How are you feeling?</label>
+            <input type="text" class="form-control" id="postMood" placeholder="e.g., Happy, Excited, Thoughtful...">
+          </div>
+          
+          <!-- Location Input -->
+          <div class="mt-3" id="locationSection" style="display: none;">
+            <label class="form-label">Add Location</label>
+            <input type="text" class="form-control" id="postLocation" placeholder="Where are you?">
+          </div>
+          
+          <!-- Hashtags Input -->
+          <div class="mt-3">
+            <label class="form-label">Hashtags (separate with commas)</label>
+            <input type="text" class="form-control" id="postHashtags" placeholder="e.g., travel, food, fun">
+          </div>
+          
+          <div class="mt-3">
+            <input type="file" id="mediaUpload" multiple accept="image/*,video/*" style="display: none;">
+            <button type="button" class="btn btn-outline-primary btn-sm me-2" id="selectMediaBtn">
+              <i class="fas fa-image me-1"></i> Photo/Video
+            </button>
+            <button type="button" class="btn btn-outline-secondary btn-sm me-2" id="addLocationModalBtn">
+              <i class="fas fa-map-marker-alt me-1"></i> Location
+            </button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" id="addMoodModalBtn">
+              <i class="fas fa-smile me-1"></i> Mood
+            </button>
           </div>
         </div>
-      </div>
-
-      <!-- Posts Creation -->
-      <div class="col-lg-6" id="posts-section">
-        <div class="card h-100">
-          <div class="card-header bg-success text-white">
-            <h3 class="mb-0"><i class="fas fa-edit me-2"></i>Create Post</h3>
-          </div>
-          <div class="card-body">
-            <form id="postForm">
-              <div class="mb-3">
-                <label for="postUserId" class="form-label">Select User</label>
-                <select class="form-select" id="postUserId" required>
-                  <option value="">Choose a user...</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="content" class="form-label">What's on your mind?</label>
-                <textarea class="form-control" id="content" rows="4" placeholder="Share your thoughts..." required></textarea>
-              </div>
-              <button type="submit" class="btn btn-success w-100">
-                <i class="fas fa-paper-plane me-1"></i> Create Post
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      <!-- Follow System -->
-      <div class="col-lg-6" id="follow-section">
-        <div class="card h-100">
-          <div class="card-header bg-info text-white">
-            <h3 class="mb-0"><i class="fas fa-link me-2"></i>Follow System</h3>
-          </div>
-          <div class="card-body">
-            <form id="followForm">
-              <div class="mb-3">
-                <label for="followerId" class="form-label">Who is following?</label>
-                <select class="form-select" id="followerId" required>
-                  <option value="">Select follower...</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="followedId" class="form-label">Who to follow?</label>
-                <select class="form-select" id="followedId" required>
-                  <option value="">Select user to follow...</option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-info w-100">
-                <i class="fas fa-user-plus me-1"></i> Follow User
-              </button>
-            </form>
-            
-            <div class="section-title mt-4">Followers Network</div>
-            <div id="followersLoading" class="loading">Loading followers...</div>
-            <div id="followersList" class="mt-2"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Posts Display -->
-      <div class="col-lg-6">
-        <div class="card h-100">
-          <div class="card-header bg-warning text-dark">
-            <h3 class="mb-0"><i class="fas fa-newspaper me-2"></i>Latest Posts</h3>
-          </div>
-          <div class="card-body">
-            <div id="postsLoading" class="loading">Loading posts...</div>
-            <div id="posts" class="mt-2"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Comments System -->
-      <div class="col-12" id="comments-section">
-        <div class="card">
-          <div class="card-header bg-secondary text-white">
-            <h3 class="mb-0"><i class="fas fa-comments me-2"></i>Comments</h3>
-          </div>
-          <div class="card-body">
-            <div id="commentsLoading" class="loading">Loading comments...</div>
-            <div id="commentsList" class="mt-2"></div>
-          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="submitPostBtn">
+            <i class="fas fa-paper-plane me-1"></i> Post
+          </button>
         </div>
       </div>
     </div>
@@ -292,608 +582,1145 @@
   
   <script>
     const api = "http://localhost:5000";
+    let currentUser = null;
     let currentUsers = [];
-
-    // ==================== UTILITY FUNCTIONS ====================
-    function showLoading() {
-      document.querySelectorAll('.loading').forEach(el => {
-        el.style.display = 'block';
-      });
+    let posts = [];
+    let selectedFiles = [];
+    
+    // Check if user is logged in
+    function checkAuth() {
+      const user = localStorage.getItem('currentUser');
+      if (!user) {
+        window.location.href = 'register.html';
+        return false;
+      }
+      try {
+        currentUser = JSON.parse(user);
+        return true;
+      } catch (e) {
+        console.error('Error parsing user data:', e);
+        window.location.href = 'register.html';
+        return false;
+      }
     }
-
-    function hideLoading() {
-      document.querySelectorAll('.loading').forEach(el => {
-        el.style.display = 'none';
-      });
-    }
-
+    
+    // Show message function
     function showMessage(message, type = 'success') {
-      const messageDiv = document.createElement('div');
-      messageDiv.className = type === 'success' ? 'alert alert-success' : 'alert alert-danger';
-      messageDiv.textContent = message;
-      document.body.prepend(messageDiv);
+      // Remove any existing messages first
+      const existingAlerts = document.querySelectorAll('.alert');
+      existingAlerts.forEach(alert => alert.remove());
+      
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
+      alertDiv.style.top = '70px';
+      alertDiv.style.right = '20px';
+      alertDiv.style.zIndex = '1050';
+      alertDiv.style.maxWidth = '300px';
+      alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+      
+      document.body.appendChild(alertDiv);
       
       setTimeout(() => {
-        messageDiv.remove();
-      }, 3000);
+        if (alertDiv.parentNode) {
+          alertDiv.remove();
+        }
+      }, 5000);
     }
-
-    async function handleApiCall(apiCall, successMessage = 'Operation completed successfully') {
+    
+    // Check server health
+    async function checkServerHealth() {
       try {
-        const response = await apiCall();
+        const response = await fetch(`${api}/health`);
+        if (!response.ok) throw new Error('Server not responding');
+        const data = await response.json();
+        console.log('Server status:', data);
+        return true;
+      } catch (error) {
+        console.error('Server health check failed:', error);
+        showMessage('Server connection failed. Please make sure the backend server is running on port 5000.', 'error');
+        return false;
+      }
+    }
+    
+    // Initialize user info in navbar and sidebar
+    function initializeUserInfo() {
+      if (!currentUser) return;
+      
+      // Set user avatar (first letter of username)
+      const userInitial = currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'U';
+      
+      // Update navbar
+      document.getElementById('navbarAvatar').textContent = userInitial;
+      document.getElementById('navbarUsername').textContent = currentUser.username || 'User';
+      
+      // Update sidebar
+      document.getElementById('sidebarAvatar').textContent = userInitial;
+      document.getElementById('sidebarUsername').textContent = currentUser.username || 'Username';
+      document.getElementById('sidebarFullname').textContent = currentUser.fullName || currentUser.email || 'Full Name';
+      
+      // Update modal
+      document.getElementById('modalAvatar').textContent = userInitial;
+      document.getElementById('modalUsername').textContent = currentUser.username || 'Username';
+      
+      // Update create post area
+      document.getElementById('createPostAvatar').textContent = userInitial;
+    }
+    
+    // Load users
+    async function loadUsers() {
+      try {
+        console.log('Loading users...');
+        const response = await fetch(`${api}/users`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const usersData = await response.json();
+        console.log('Users loaded:', usersData.length);
+        currentUsers = Array.isArray(usersData) ? usersData : [];
+        
+        // Load user stats
+        await loadUserStats();
+        
+        // Load suggestions
+        loadSuggestions();
+        
+        // Load stories
+        await loadStories();
+        
+        // Load online friends
+        loadOnlineFriends();
+        
+      } catch (error) {
+        console.error('Error loading users:', error);
+        showMessage('Failed to load users: ' + error.message, 'error');
+        currentUsers = [];
+      }
+    }
+    
+    // Load user stats
+    async function loadUserStats() {
+      if (!currentUser) return;
+      
+      try {
+        const userResponse = await fetch(`${api}/users/${currentUser.id}`);
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          document.getElementById('postsCount').textContent = userData.postsCount || 0;
+          document.getElementById('followersCount').textContent = userData.followersCount || 0;
+          document.getElementById('followingCount').textContent = userData.followingCount || 0;
+        } else {
+          // If specific user endpoint fails, calculate from general data
+          const postsResponse = await fetch(`${api}/posts?userId=${currentUser.id}`);
+          const followersResponse = await fetch(`${api}/followers/${currentUser.id}`);
+          const followingResponse = await fetch(`${api}/following/${currentUser.id}`);
+          
+          const posts = postsResponse.ok ? await postsResponse.json() : [];
+          const followers = followersResponse.ok ? await followersResponse.json() : [];
+          const following = followingResponse.ok ? await followingResponse.json() : [];
+          
+          document.getElementById('postsCount').textContent = posts.length || 0;
+          document.getElementById('followersCount').textContent = followers.length || 0;
+          document.getElementById('followingCount').textContent = following.length || 0;
+        }
+        
+      } catch (error) {
+        console.error('Error loading user stats:', error);
+        // Set default values
+        document.getElementById('postsCount').textContent = '0';
+        document.getElementById('followersCount').textContent = '0';
+        document.getElementById('followingCount').textContent = '0';
+      }
+    }
+    
+    // Load suggestions
+    async function loadSuggestions() {
+      if (!currentUser || !currentUsers.length) {
+        document.getElementById('suggestionsList').innerHTML = '<div class="text-muted">No suggestions available</div>';
+        return;
+      }
+      
+      try {
+        // Get current user's following list
+        let following = [];
+        try {
+          const followingResponse = await fetch(`${api}/following/${currentUser.id}`);
+          if (followingResponse.ok) {
+            following = await followingResponse.json();
+          }
+        } catch (e) {
+          console.log('Could not load following list');
+        }
+        
+        const followingIds = following.map(f => f.followedId);
+        
+        // Filter out current user and users already followed
+        const suggestions = currentUsers.filter(user => 
+          user.id !== currentUser.id && !followingIds.includes(user.id)
+        ).slice(0, 5);
+        
+        if (suggestions.length === 0) {
+          document.getElementById('suggestionsList').innerHTML = '<div class="text-muted">No suggestions available</div>';
+          return;
+        }
+        
+        const suggestionsHTML = suggestions.map(user => `
+          <div class="suggestion-card">
+            <div class="user-avatar">${user.username ? user.username.charAt(0).toUpperCase() : 'U'}</div>
+            <div class="suggestion-info">
+              <div class="suggestion-username">${user.username || 'Unknown User'}</div>
+              <div class="suggestion-fullname">${user.fullName || user.email || ''}</div>
+            </div>
+            <button class="btn btn-primary btn-sm btn-follow" data-user-id="${user.id}">
+              Follow
+            </button>
+          </div>
+        `).join('');
+        
+        document.getElementById('suggestionsList').innerHTML = suggestionsHTML;
+        
+        // Add event listeners to follow buttons
+        document.querySelectorAll('.btn-follow').forEach(btn => {
+          btn.addEventListener('click', async function() {
+            const userId = this.getAttribute('data-user-id');
+            await followUser(userId, this);
+          });
+        });
+        
+      } catch (error) {
+        console.error('Error loading suggestions:', error);
+        document.getElementById('suggestionsList').innerHTML = '<div class="text-muted">Error loading suggestions</div>';
+      }
+    }
+    
+    // Follow user function
+    async function followUser(userId, button) {
+      try {
+        const response = await fetch(`${api}/followers`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            followerId: currentUser.id,
+            followedId: userId
+          })
+        });
+        
+        if (response.ok) {
+          showMessage('Followed successfully!');
+          button.textContent = 'Following';
+          button.classList.remove('btn-primary');
+          button.classList.add('btn-outline-secondary');
+          button.disabled = true;
+          
+          // Update following count
+          await loadUserStats();
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to follow user');
+        }
+      } catch (error) {
+        console.error('Error following user:', error);
+        showMessage(error.message, 'error');
+      }
+    }
+    
+    // Load stories
+    async function loadStories() {
+      try {
+        const response = await fetch(`${api}/stories`);
+        if (!response.ok) throw new Error('Failed to load stories');
+        
+        const stories = await response.json();
+        
+        let storiesHTML = `
+          <div class="story-item" onclick="showMessage('Create story feature coming soon!')">
+            <div class="new-story">
+              <i class="fas fa-plus"></i>
+            </div>
+            <div class="story-username">Your Story</div>
+          </div>
+        `;
+        
+        // Add stories from other users (up to 7)
+        const validStories = stories.slice(0, 7);
+        
+        if (validStories.length > 0) {
+          storiesHTML += validStories.map(story => `
+            <div class="story-item" onclick="viewStory('${story.id}')">
+              <div class="story-avatar">
+                <div class="story-avatar-inner">
+                  ${story.username ? story.username.charAt(0).toUpperCase() : 'U'}
+                </div>
+              </div>
+              <div class="story-username">${story.username || 'Unknown User'}</div>
+            </div>
+          `).join('');
+        }
+        
+        document.getElementById('storiesContainer').innerHTML = storiesHTML;
+        
+      } catch (error) {
+        console.error('Error loading stories:', error);
+        // Fallback to user-based stories if API fails
+        loadFallbackStories();
+      }
+    }
+    
+    // Fallback stories based on users
+    function loadFallbackStories() {
+      if (!currentUsers.length) {
+        document.getElementById('storiesContainer').innerHTML = `
+          <div class="story-item" onclick="showMessage('Create story feature coming soon!')">
+            <div class="new-story">
+              <i class="fas fa-plus"></i>
+            </div>
+            <div class="story-username">Your Story</div>
+          </div>
+          <div class="text-muted">No stories available</div>
+        `;
+        return;
+      }
+      
+      let storiesHTML = `
+        <div class="story-item" onclick="showMessage('Create story feature coming soon!')">
+          <div class="new-story">
+            <i class="fas fa-plus"></i>
+          </div>
+          <div class="story-username">Your Story</div>
+        </div>
+      `;
+      
+      // Add stories from other users (up to 7)
+      const storyUsers = currentUsers
+        .filter(user => user.id !== currentUser.id)
+        .slice(0, 7);
+      
+      if (storyUsers.length > 0) {
+        storiesHTML += storyUsers.map(user => `
+          <div class="story-item" onclick="viewUserStory('${user.id}')">
+            <div class="story-avatar">
+              <div class="story-avatar-inner">
+                ${user.username.charAt(0).toUpperCase()}
+              </div>
+            </div>
+            <div class="story-username">${user.username}</div>
+          </div>
+        `).join('');
+      }
+      
+      document.getElementById('storiesContainer').innerHTML = storiesHTML;
+    }
+    
+    // Story view functions
+    function viewStory(storyId) {
+      showMessage('Viewing story...');
+    }
+    
+    function viewUserStory(userId) {
+      showMessage('Viewing user story...');
+    }
+    
+    // Load online friends
+    function loadOnlineFriends() {
+      if (!currentUsers.length) {
+        document.getElementById('onlineFriendsList').innerHTML = '<div class="text-muted">No friends online</div>';
+        return;
+      }
+      
+      // Show users who are marked as online or recently active
+      const onlineFriends = currentUsers
+        .filter(user => user.id !== currentUser.id && (user.isOnline || isRecentlyActive(user)))
+        .slice(0, 5);
+      
+      if (onlineFriends.length === 0) {
+        document.getElementById('onlineFriendsList').innerHTML = '<div class="text-muted">No friends online</div>';
+        return;
+      }
+      
+      const onlineFriendsHTML = onlineFriends.map(user => `
+        <div class="d-flex align-items-center mb-2">
+          <div class="position-relative">
+            <div class="user-avatar">${user.username.charAt(0).toUpperCase()}</div>
+            <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-white rounded-circle"></span>
+          </div>
+          <div class="ms-2">
+            <div class="fw-bold">${user.username}</div>
+            <small class="text-muted">${user.isOnline ? 'Active now' : 'Recently active'}</small>
+          </div>
+        </div>
+      `).join('');
+      
+      document.getElementById('onlineFriendsList').innerHTML = onlineFriendsHTML;
+    }
+    
+    // Check if user was recently active (within last 10 minutes)
+    function isRecentlyActive(user) {
+      if (!user.lastSeen) return false;
+      try {
+        const lastSeen = new Date(user.lastSeen);
+        const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
+        return lastSeen > tenMinutesAgo;
+      } catch (e) {
+        return false;
+      }
+    }
+    
+    // Load posts
+    async function loadPosts() {
+      try {
+        showLoadingPosts();
+        
+        console.log('Fetching posts from:', `${api}/posts`);
+        const response = await fetch(`${api}/posts`);
         
         if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        const data = await response.json();
-        if (successMessage) {
-          showMessage(successMessage);
-        }
-        return data;
+        const postsData = await response.json();
+        console.log('Posts loaded:', postsData.length);
+        
+        posts = Array.isArray(postsData) ? postsData : [];
+        
+        // Display posts
+        displayPosts();
+        
       } catch (error) {
-        console.error('API Error:', error);
+        console.error('Error loading posts:', error);
+        showMessage('Failed to load posts: ' + error.message, 'error');
+        showErrorState(error);
+      }
+    }
+    
+    // Show loading state for posts
+    function showLoadingPosts() {
+      document.getElementById('postsFeed').innerHTML = `
+        <div class="main-content text-center py-5">
+          <div class="spinner-border text-primary mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <h5>Loading posts...</h5>
+          <p class="text-muted">Please wait while we fetch the latest posts</p>
+        </div>
+      `;
+    }
+    
+    // Show error state
+    function showErrorState(error) {
+      document.getElementById('postsFeed').innerHTML = `
+        <div class="main-content text-center py-5">
+          <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+          <h5>Failed to load posts</h5>
+          <p class="text-muted">${error.message || 'Please check your connection and try again'}</p>
+          <div class="mt-3">
+            <button class="btn btn-primary me-2" onclick="loadPosts()">
+              <i class="fas fa-redo me-1"></i> Try Again
+            </button>
+            <button class="btn btn-outline-secondary" onclick="checkServerHealth()">
+              <i class="fas fa-server me-1"></i> Check Server
+            </button>
+          </div>
+          <div class="mt-3">
+            <small class="text-muted">
+              Make sure the backend server is running on http://localhost:5000
+            </small>
+          </div>
+        </div>
+      `;
+    }
+    
+    // Display posts
+    function displayPosts() {
+      if (!posts.length) {
+        document.getElementById('postsFeed').innerHTML = `
+          <div class="main-content text-center py-5">
+            <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
+            <h5>No posts yet</h5>
+            <p class="text-muted">Be the first to share something!</p>
+            <button class="btn btn-primary mt-2" onclick="document.getElementById('createPostModal').show()">
+              <i class="fas fa-plus me-1"></i> Create First Post
+            </button>
+          </div>
+        `;
+        return;
+      }
+      
+      const postsHTML = posts.map(post => {
+        // Format date
+        let formattedDate = 'Unknown date';
+        try {
+          const postDate = new Date(post.createdAt);
+          formattedDate = postDate.toLocaleDateString() + ' at ' + postDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        } catch (e) {
+          console.error('Error formatting date:', e);
+        }
+        
+        // Check if current user liked this post
+        const isLiked = post.likes && Array.isArray(post.likes) && post.likes.includes(currentUser.id);
+        
+        return `
+          <div class="main-content post-item" id="post-${post.id}">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div class="d-flex align-items-center">
+                <div class="user-avatar">${post.username ? post.username.charAt(0).toUpperCase() : 'U'}</div>
+                <div class="ms-3">
+                  <div class="fw-bold">${post.username || 'Unknown User'}</div>
+                  <small class="text-muted">${formattedDate}</small>
+                </div>
+              </div>
+              <div class="dropdown">
+                <button class="btn btn-sm" type="button" id="postDropdown-${post.id}" data-bs-toggle="dropdown">
+                  <i class="fas fa-ellipsis-h"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="#"><i class="fas fa-bookmark me-2"></i>Save</a></li>
+                  <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i>Report</a></li>
+                  ${post.userId === currentUser.id ? `
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="#" onclick="deletePost('${post.id}')"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                  ` : ''}
+                </ul>
+              </div>
+            </div>
+            
+            ${post.content ? `<div class="mb-3">${post.content}</div>` : ''}
+            
+            ${post.media && post.media.length > 0 ? `
+              <div class="post-media mb-3">
+                ${post.media.map(media => {
+                  if (media.type === 'image') {
+                    return `<img src="${media.url}" alt="${media.caption || 'Post image'}" class="post-image" onerror="this.style.display='none'">`;
+                  } else if (media.type === 'video') {
+                    return `
+                      <video controls class="post-video">
+                        <source src="${media.url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                    `;
+                  }
+                  return '';
+                }).join('')}
+              </div>
+            ` : ''}
+            
+            ${post.mood ? `<div class="mb-2"><span class="badge bg-info">${post.mood}</span></div>` : ''}
+            
+            ${post.location && post.location.name ? `<div class="mb-2"><small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>${post.location.name}</small></div>` : ''}
+            
+            ${post.hashtags && post.hashtags.length > 0 ? `
+              <div class="mb-2">
+                ${post.hashtags.map(tag => `<span class="badge bg-light text-dark me-1">#${tag}</span>`).join('')}
+              </div>
+            ` : ''}
+            
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}', this)">
+                  <i class="fas fa-heart"></i>
+                </button>
+                <button class="action-btn" onclick="toggleComments('${post.id}')">
+                  <i class="fas fa-comment"></i>
+                </button>
+                <button class="action-btn" onclick="sharePost('${post.id}')">
+                  <i class="fas fa-share"></i>
+                </button>
+              </div>
+              <button class="action-btn" onclick="savePost('${post.id}')">
+                <i class="fas fa-bookmark"></i>
+              </button>
+            </div>
+            
+            <div class="mb-2">
+              <span class="fw-bold">${post.likesCount || 0} likes</span>
+              ${post.comments && post.comments.length > 0 ? `
+                <span class="fw-bold ms-2">${post.comments.length} comments</span>
+              ` : ''}
+            </div>
+            
+            <div id="comments-${post.id}" style="display: none;">
+              <div class="mt-3 mb-2" id="comments-list-${post.id}">
+                ${generateComments(post)}
+              </div>
+              
+              <div class="d-flex mt-2">
+                <div class="user-avatar">${currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'U'}</div>
+                <input type="text" class="form-control ms-2" placeholder="Add a comment..." id="comment-input-${post.id}">
+                <button class="btn btn-primary ms-2" onclick="addComment('${post.id}')">Post</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      document.getElementById('postsFeed').innerHTML = postsHTML;
+    }
+    
+    // Generate comments for a post
+    function generateComments(post) {
+      if (!post.comments || !Array.isArray(post.comments) || post.comments.length === 0) {
+        return '<div class="text-muted">No comments yet. Be the first to comment!</div>';
+      }
+      
+      return post.comments.map(comment => `
+        <div class="mb-2 comment-item">
+          <div class="fw-bold">${comment.username || 'Unknown User'}</div>
+          <div>${comment.content}</div>
+          <small class="text-muted">${new Date(comment.createdAt).toLocaleDateString()}</small>
+        </div>
+      `).join('');
+    }
+    
+    // Toggle like on a post
+    async function toggleLike(postId, button) {
+      try {
+        const isCurrentlyLiked = button.classList.contains('liked');
+        
+        if (isCurrentlyLiked) {
+          // Unlike the post
+          const response = await fetch(`${api}/likes`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              userId: currentUser.id,
+              targetId: postId,
+              targetType: 'post'
+            })
+          });
+          
+          if (response.ok) {
+            button.classList.remove('liked');
+            showMessage('Post unliked');
+            updateLikeCount(postId, -1);
+          } else {
+            throw new Error('Failed to unlike post');
+          }
+        } else {
+          // Like the post
+          const response = await fetch(`${api}/likes`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              userId: currentUser.id,
+              targetId: postId,
+              targetType: 'post'
+            })
+          });
+          
+          if (response.ok) {
+            button.classList.add('liked');
+            showMessage('Post liked!');
+            updateLikeCount(postId, 1);
+          } else {
+            throw new Error('Failed to like post');
+          }
+        }
+      } catch (error) {
+        console.error('Error toggling like:', error);
+        showMessage('Error updating like: ' + error.message, 'error');
+      }
+    }
+    
+    // Update like count display
+    function updateLikeCount(postId, change) {
+      const likeCountElement = document.querySelector(`#post-${postId} .fw-bold`);
+      if (likeCountElement) {
+        const currentText = likeCountElement.textContent;
+        const currentCount = parseInt(currentText) || 0;
+        const newCount = Math.max(0, currentCount + change);
+        likeCountElement.textContent = `${newCount} likes`;
+      }
+    }
+    
+    // Toggle comments section
+    async function toggleComments(postId) {
+      const commentsSection = document.getElementById(`comments-${postId}`);
+      const isVisible = commentsSection.style.display === 'block';
+      
+      if (!isVisible) {
+        // Load comments if not already loaded
+        await loadComments(postId);
+      }
+      
+      commentsSection.style.display = isVisible ? 'none' : 'block';
+    }
+    
+    // Load comments for a post
+    async function loadComments(postId) {
+      try {
+        const response = await fetch(`${api}/comments/post/${postId}`);
+        if (response.ok) {
+          const comments = await response.json();
+          const commentsList = document.getElementById(`comments-list-${postId}`);
+          if (commentsList) {
+            commentsList.innerHTML = comments.map(comment => `
+              <div class="mb-2 comment-item">
+                <div class="fw-bold">${comment.username || 'Unknown User'}</div>
+                <div>${comment.content}</div>
+                <small class="text-muted">${new Date(comment.createdAt).toLocaleDateString()}</small>
+              </div>
+            `).join('') || '<div class="text-muted">No comments yet. Be the first to comment!</div>';
+          }
+        }
+      } catch (error) {
+        console.error('Error loading comments:', error);
+        const commentsList = document.getElementById(`comments-list-${postId}`);
+        if (commentsList) {
+          commentsList.innerHTML = '<div class="text-muted">Error loading comments</div>';
+        }
+      }
+    }
+    
+    // Add comment to a post
+    async function addComment(postId) {
+      const commentInput = document.getElementById(`comment-input-${postId}`);
+      const commentText = commentInput.value.trim();
+      
+      if (!commentText) {
+        showMessage('Please enter a comment', 'error');
+        return;
+      }
+      
+      try {
+        const response = await fetch(`${api}/comments`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            postId: postId,
+            userId: currentUser.id,
+            content: commentText
+          })
+        });
+        
+        if (response.ok) {
+          const newComment = await response.json();
+          showMessage('Comment added!');
+          commentInput.value = '';
+          
+          // Add the new comment to the list
+          const commentsList = document.getElementById(`comments-list-${postId}`);
+          if (commentsList) {
+            const commentHTML = `
+              <div class="mb-2 comment-item">
+                <div class="fw-bold">${newComment.username || currentUser.username}</div>
+                <div>${newComment.content}</div>
+                <small class="text-muted">Just now</small>
+              </div>
+            `;
+            commentsList.innerHTML = commentHTML + commentsList.innerHTML;
+          }
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to add comment');
+        }
+      } catch (error) {
+        console.error('Error adding comment:', error);
         showMessage(error.message, 'error');
+      }
+    }
+    
+    // Delete a post
+    async function deletePost(postId) {
+      if (!confirm('Are you sure you want to delete this post?')) return;
+      
+      try {
+        const response = await fetch(`${api}/posts/${postId}`, {
+          method: 'DELETE'
+        });
+        
+        if (response.ok) {
+          showMessage('Post deleted successfully!');
+          // Remove post from DOM
+          const postElement = document.getElementById(`post-${postId}`);
+          if (postElement) {
+            postElement.remove();
+          }
+          // Reload user stats
+          await loadUserStats();
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to delete post');
+        }
+      } catch (error) {
+        console.error('Error deleting post:', error);
+        showMessage(error.message, 'error');
+      }
+    }
+    
+    // Handle media file selection
+    function handleMediaSelection(files) {
+      const mediaPreview = document.getElementById('mediaPreview');
+      const mediaPreviewContainer = document.getElementById('mediaPreviewContainer');
+      
+      if (!files || files.length === 0) {
+        mediaPreview.style.display = 'none';
+        selectedFiles = [];
+        return;
+      }
+      
+      // Clear previous previews
+      mediaPreviewContainer.innerHTML = '';
+      selectedFiles = Array.from(files);
+      
+      // Show preview for each file
+      selectedFiles.forEach((file, index) => {
+        const previewItem = document.createElement('div');
+        previewItem.className = 'media-preview-item';
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'remove-media-btn';
+        removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+        removeBtn.onclick = () => removeMediaFile(index);
+        
+        const typeBadge = document.createElement('div');
+        typeBadge.className = 'media-type-badge';
+        typeBadge.textContent = file.type.startsWith('image/') ? 'IMAGE' : 'VIDEO';
+        
+        if (file.type.startsWith('image/')) {
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          previewItem.appendChild(img);
+        } else if (file.type.startsWith('video/')) {
+          const video = document.createElement('video');
+          video.src = URL.createObjectURL(file);
+          video.controls = true;
+          previewItem.appendChild(video);
+        }
+        
+        previewItem.appendChild(removeBtn);
+        previewItem.appendChild(typeBadge);
+        mediaPreviewContainer.appendChild(previewItem);
+      });
+      
+      mediaPreview.style.display = 'block';
+    }
+    
+    // Remove media file from selection
+    function removeMediaFile(index) {
+      selectedFiles.splice(index, 1);
+      const mediaUpload = document.getElementById('mediaUpload');
+      
+      // Update the file input
+      const dt = new DataTransfer();
+      selectedFiles.forEach(file => dt.items.add(file));
+      mediaUpload.files = dt.files;
+      
+      // Refresh preview
+      handleMediaSelection(selectedFiles);
+    }
+    
+    // Create post with media upload
+    async function createPost(content) {
+      try {
+        const visibility = document.getElementById('postVisibility').value;
+        const mood = document.getElementById('postMood').value;
+        const location = document.getElementById('postLocation').value;
+        const hashtags = document.getElementById('postHashtags').value;
+        const hasMedia = selectedFiles.length > 0;
+        
+        if (!content && !hasMedia) {
+          showMessage('Please enter some content or add media for your post', 'error');
+          return;
+        }
+        
+        // Show upload progress
+        const uploadProgress = document.getElementById('uploadProgress');
+        const uploadProgressBar = document.getElementById('uploadProgressBar');
+        uploadProgress.style.display = 'block';
+        uploadProgressBar.style.width = '0%';
+        
+        // Create FormData for file upload
+        const formData = new FormData();
+        formData.append('userId', currentUser.id);
+        formData.append('content', content || '');
+        formData.append('visibility', visibility);
+        
+        if (mood) formData.append('mood', mood);
+        if (location) formData.append('location', JSON.stringify({ name: location }));
+        if (hashtags) formData.append('hashtags', hashtags);
+        
+        // Append media files
+        selectedFiles.forEach(file => {
+          formData.append('media', file);
+        });
+        
+        // Simulate upload progress
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+          progress += 5;
+          uploadProgressBar.style.width = `${progress}%`;
+          if (progress >= 90) clearInterval(progressInterval);
+        }, 100);
+        
+        const response = await fetch(`${api}/posts`, {
+          method: 'POST',
+          body: formData
+        });
+        
+        clearInterval(progressInterval);
+        uploadProgressBar.style.width = '100%';
+        
+        if (response.ok) {
+          showMessage('Post created successfully!');
+          resetPostForm();
+          createPostModal.hide();
+          await loadPosts();
+          await loadUserStats();
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to create post');
+        }
+      } catch (error) {
+        console.error('Error creating post:', error);
+        showMessage('Error creating post: ' + error.message, 'error');
+      } finally {
+        // Hide progress bar
+        setTimeout(() => {
+          const uploadProgress = document.getElementById('uploadProgress');
+          if (uploadProgress) {
+            uploadProgress.style.display = 'none';
+          }
+        }, 1000);
+      }
+    }
+    
+    // Reset post form after submission
+    function resetPostForm() {
+      document.getElementById('modalPostContent').value = '';
+      document.getElementById('postMood').value = '';
+      document.getElementById('postLocation').value = '';
+      document.getElementById('postHashtags').value = '';
+      document.getElementById('mediaUpload').value = '';
+      document.getElementById('mediaPreview').style.display = 'none';
+      document.getElementById('mediaPreviewContainer').innerHTML = '';
+      document.getElementById('locationSection').style.display = 'none';
+      document.getElementById('moodSection').style.display = 'none';
+      selectedFiles = [];
+    }
+    
+    // Share post function
+    function sharePost(postId) {
+      showMessage('Share feature coming soon!');
+    }
+    
+    // Save post function
+    function savePost(postId) {
+      showMessage('Post saved!');
+    }
+    
+    // Initialize the app
+    async function initializeApp() {
+      if (!checkAuth()) return;
+      
+      // Check server health first
+      const isServerHealthy = await checkServerHealth();
+      if (!isServerHealthy) {
+        showErrorState(new Error('Server not available'));
+        return;
+      }
+      
+      initializeUserInfo();
+      await loadUsers();
+      await loadPosts();
+    }
+    
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', initializeApp);
+    
+    // Logout
+       // Logout
+    document.getElementById('logoutLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.removeItem('currentUser');
+      window.location.href = 'register.html';
+    });
+    
+    // Profile links
+    document.getElementById('profileLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = `profile.html?id=${currentUser.id}`;
+    });
+    
+    document.getElementById('profileDropdownLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = `profile.html?id=${currentUser.id}`;
+    });
+    
+    document.getElementById('editProfileBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = `profile.html?id=${currentUser.id}&edit=true`;
+    });
+    
+    // Create post modal
+    const createPostModal = new bootstrap.Modal(document.getElementById('createPostModal'));
+    
+    document.getElementById('createPostBtn').addEventListener('click', function() {
+      createPostModal.show();
+    });
+    
+    document.getElementById('postContentInput').addEventListener('click', function() {
+      createPostModal.show();
+    });
+    
+    // Media upload handler
+    document.getElementById('selectMediaBtn').addEventListener('click', function() {
+      document.getElementById('mediaUpload').click();
+    });
+    
+    // Handle file selection
+    document.getElementById('mediaUpload').addEventListener('change', function(e) {
+      handleMediaSelection(e.target.files);
+    });
+    
+    // Location button in modal
+    document.getElementById('addLocationModalBtn').addEventListener('click', function() {
+      const locationSection = document.getElementById('locationSection');
+      locationSection.style.display = locationSection.style.display === 'none' ? 'block' : 'none';
+    });
+    
+    // Mood button in modal
+    document.getElementById('addMoodModalBtn').addEventListener('click', function() {
+      const moodSection = document.getElementById('moodSection');
+      moodSection.style.display = moodSection.style.display === 'none' ? 'block' : 'none';
+    });
+    
+    // Submit post button
+    document.getElementById('submitPostBtn').addEventListener('click', function() {
+      const content = document.getElementById('modalPostContent').value.trim();
+      createPost(content);
+    });
+    
+    // Media buttons in main content
+    document.getElementById('addPhotoBtn').addEventListener('click', function() {
+      createPostModal.show();
+      setTimeout(() => {
+        document.getElementById('mediaUpload').click();
+      }, 500);
+    });
+    
+    document.getElementById('addVideoBtn').addEventListener('click', function() {
+      createPostModal.show();
+      setTimeout(() => {
+        document.getElementById('mediaUpload').click();
+      }, 500);
+    });
+    
+    document.getElementById('addLocationBtn').addEventListener('click', function() {
+      createPostModal.show();
+      setTimeout(() => {
+        document.getElementById('locationSection').style.display = 'block';
+        document.getElementById('postLocation').focus();
+      }, 500);
+    });
+    
+    document.getElementById('addMoodBtn').addEventListener('click', function() {
+      createPostModal.show();
+      setTimeout(() => {
+        document.getElementById('moodSection').style.display = 'block';
+        document.getElementById('postMood').focus();
+      }, 500);
+    });
+    
+    // Refresh data every 30 seconds
+    setInterval(async () => {
+      if (currentUser) {
+        try {
+          await loadPosts();
+          await loadUsers();
+        } catch (error) {
+          console.error('Error refreshing data:', error);
+        }
+      }
+    }, 30000);
+
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      // Ctrl+Enter or Cmd+Enter to submit post
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        const modal = document.getElementById('createPostModal');
+        if (modal && modal.style.display !== 'none') {
+          const content = document.getElementById('modalPostContent').value.trim();
+          const hasMedia = selectedFiles.length > 0;
+          if (content || hasMedia) {
+            createPost(content);
+          }
+        }
+      }
+      
+      // Escape to close modal
+      if (e.key === 'Escape') {
+        const modal = bootstrap.Modal.getInstance(document.getElementById('createPostModal'));
+        if (modal) {
+          modal.hide();
+        }
+      }
+    });
+
+    // Add service worker for offline support (optional)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function(registration) {
+            console.log('ServiceWorker registration successful');
+          })
+          .catch(function(error) {
+            console.log('ServiceWorker registration failed: ', error);
+          });
+      });
+    }
+
+    // Add offline/online detection
+    window.addEventListener('online', function() {
+      showMessage('Connection restored', 'success');
+      initializeApp();
+    });
+
+    window.addEventListener('offline', function() {
+      showMessage('You are currently offline', 'warning');
+    });
+
+    // Add retry mechanism for failed requests
+    async function fetchWithRetry(url, options = {}, retries = 3) {
+      try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response;
+      } catch (error) {
+        if (retries > 0) {
+          console.log(`Retrying request... ${retries} attempts left`);
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          return fetchWithRetry(url, options, retries - 1);
+        }
         throw error;
       }
     }
 
-    // ==================== INITIALIZATION ====================
-    async function initializeApp() {
-      showLoading();
+    // Enhanced fetch function with better error handling
+    async function enhancedFetch(url, options = {}) {
       try {
-        // Test server connection first
-        await fetch(api + "/health");
-        
-        await Promise.all([
-          loadUsers(),
-          loadPosts(),
-          loadComments(),
-          loadFollowersData(),
-        ]);
-        hideLoading();
+        const response = await fetchWithRetry(url, options);
+        return response;
       } catch (error) {
-        hideLoading();
-        showMessage('Failed to connect to server. Please make sure the server is running on port 5000.', 'error');
+        console.error('Fetch failed:', error);
+        throw new Error(`Network error: ${error.message}`);
       }
     }
 
-    // ==================== USERS ====================
-    async function loadUsers() {
-      try {
-        const users = await handleApiCall(
-          () => fetch(api + "/users"),
-          null
-        );
-        
-        currentUsers = users;
-        
-        // Populate dropdowns
-        const userOptions = currentUsers.map(user => 
-          `<option value="${user.id}">${user.username}</option>`
-        ).join('');
-        
-        const dropdowns = ['postUserId', 'followerId', 'followedId'];
-        dropdowns.forEach(dropdownId => {
-          const dropdown = document.getElementById(dropdownId);
-          if (dropdown) {
-            const currentValue = dropdown.value;
-            dropdown.innerHTML = `<option value="">Select User</option>` + userOptions;
-            if (currentValue) dropdown.value = currentValue;
-          }
-        });
+    // Update all fetch calls to use enhancedFetch
+    // Note: You would need to replace all fetch() calls with enhancedFetch() in the actual implementation
 
-        // Display users list
-        document.getElementById("users").innerHTML = currentUsers.map(user => `
-          <div class="card mb-3">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-start">
-                <div class="flex-grow-1">
-                  <h5 class="card-title user-info">${user.username}</h5>
-                  <p class="card-text"><small class="text-muted">${user.email}</small></p>
-                  <div class="d-flex gap-2">
-                    <span class="stat-item"><i class="fas fa-users me-1"></i> ${user.followersCount || 0} followers</span>
-                    <span class="stat-item"><i class="fas fa-link me-1"></i> ${user.followingCount || 0} following</span>
-                  </div>
-                </div>
-                <div class="btn-group">
-                  <button class="btn btn-sm btn-info" onclick="viewUserProfile('${user.id}')">
-                    <i class="fas fa-eye"></i>
-                  </button>
-                  <button class="btn btn-sm btn-warning" onclick="startEditUser('${user.id}')">
-                    <i class="fas fa-edit"></i>
-                  </button>
-                  <button class="btn btn-sm btn-danger" onclick="deleteUser('${user.id}')">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-              </div>
-
-              <div id="editUserForm-${user.id}" class="edit-form mt-3">
-                <div class="mb-2">
-                  <input type="text" class="form-control" id="editUsername-${user.id}" value="${user.username}" placeholder="Username">
-                </div>
-                <div class="mb-2">
-                  <input type="email" class="form-control" id="editEmail-${user.id}" value="${user.email}" placeholder="Email">
-                </div>
-                <div class="mb-2">
-                  <input type="password" class="form-control" id="editPassword-${user.id}" placeholder="New password (optional)">
-                </div>
-                <div class="d-flex gap-2">
-                  <button class="btn btn-sm btn-success" onclick="saveUser('${user.id}')">
-                    <i class="fas fa-save me-1"></i> Save
-                  </button>
-                  <button class="btn btn-sm btn-secondary" onclick="cancelEditUser('${user.id}')">
-                    <i class="fas fa-times me-1"></i> Cancel
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        `).join("");
-      } catch (error) {
-        // Error already handled by handleApiCall
-      }
-    }
-
-    document.getElementById("userForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const button = e.target.querySelector('button');
-      const originalText = button.textContent;
-      
-      try {
-        button.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Creating...';
-        button.disabled = true;
-        
-        const data = {
-          username: document.getElementById("username").value,
-          email: document.getElementById("email").value,
-          password: document.getElementById("password").value
-        };
-        
-        await handleApiCall(
-          () => fetch(api + "/users", {
-            method: "POST",
-            headers: {"Content-Type":"application/json"},
-            body: JSON.stringify(data)
-          }),
-          'User created successfully!'
-        );
-        
-        e.target.reset();
-        await initializeApp();
-      } catch (error) {
-        // Error already handled by handleApiCall
-      } finally {
-        button.innerHTML = '<i class="fas fa-user-plus me-1"></i> Create User';
-        button.disabled = false;
-      }
-    });
-
-    window.startEditUser = (id) => { 
-      document.querySelectorAll('.edit-form').forEach(form => form.style.display = 'none');
-      document.getElementById(`editUserForm-${id}`).style.display = "block"; 
-    };
-    
-    window.cancelEditUser = (id) => { 
-      document.getElementById(`editUserForm-${id}`).style.display = "none"; 
-    };
-    
-    window.saveUser = async (id) => {
-      try {
-        const data = {
-          username: document.getElementById(`editUsername-${id}`).value,
-          email: document.getElementById(`editEmail-${id}`).value
-        };
-        const pwd = document.getElementById(`editPassword-${id}`).value;
-        if(pwd) data.password = pwd;
-        
-        await handleApiCall(
-          () => fetch(api+`/users/${id}`,{
-            method:"PUT",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify(data)
-          }),
-          'User updated successfully!'
-        );
-        
-        cancelEditUser(id); 
-        await initializeApp();
-      } catch (error) {
-        // Error already handled by handleApiCall
-      }
-    };
-    
-    window.deleteUser = async (id) => {
-      if(confirm("Delete this user and all their posts, comments, and follow relationships?")){
-        try {
-          await handleApiCall(
-            () => fetch(api+`/users/${id}`,{method:"DELETE"}),
-            'User deleted successfully!'
-          );
-          await initializeApp();
-        } catch (error) {
-          // Error already handled by handleApiCall
-        }
-      }
-    };
-
-    window.viewUserProfile = async (userId) => {
-      try {
-        const user = await handleApiCall(
-          () => fetch(api + `/users/${userId}`),
-          null
-        );
-        
-        alert(`User Profile:\n\nUsername: ${user.username}\nEmail: ${user.email}\nFollowers: ${user.followersCount}\nFollowing: ${user.followingCount}`);
-      } catch (error) {
-        // Error already handled by handleApiCall
-      }
-    };
-
-    // ==================== POSTS & COMMENTS ====================
-    async function loadPosts() {
-      try {
-        const posts = await handleApiCall(
-          () => fetch(api + "/posts"),
-          null
-        );
-        
-        document.getElementById("posts").innerHTML = posts.map(post => `
-          <div class='post'>
-            <div class="d-flex justify-content-between align-items-start">
-              <div class="user-info">${post.username || 'Unknown User'}</div>
-              <small class="timestamp">${new Date(post.createdAt).toLocaleString()}</small>
-            </div>
-            <div class="my-2">${post.content}</div>
-
-            <div class="d-flex justify-content-between align-items-center">
-              <div>
-                <span class="stat-item"><i class="fas fa-comments me-1"></i> ${post.comments?.length || 0} comments</span>
-              </div>
-              <div class="btn-group btn-group-sm">
-                <button class="btn btn-warning" onclick="startEditPost('${post.id}')">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn btn-danger" onclick="deletePost('${post.id}')">
-                  <i class="fas fa-trash"></i>
-                </button>
-                <button class="btn btn-info" onclick="toggleCommentForm('${post.id}')">
-                  <i class="fas fa-comment"></i>
-                </button>
-              </div>
-            </div>
-
-            <!-- Edit form -->
-            <div id="editPostForm-${post.id}" class="edit-form">
-              <div class="mb-2">
-                <textarea class="form-control" id="editPostContent-${post.id}">${post.content}</textarea>
-              </div>
-              <div class="d-flex gap-2">
-                <button class="btn btn-sm btn-success" onclick="savePost('${post.id}')">
-                  <i class="fas fa-save me-1"></i> Save
-                </button>
-                <button class="btn btn-sm btn-secondary" onclick="cancelEditPost('${post.id}')">
-                  <i class="fas fa-times me-1"></i> Cancel
-                </button>
-              </div>
-            </div>
-
-            <!-- Comment form -->
-            <div id="commentForm-${post.id}" class="comment-form">
-              <div class="mb-2">
-                <select class="form-select" id="commentUserId-${post.id}" required>
-                  <option value="">Select User</option>
-                  ${currentUsers.map(user => 
-                    `<option value="${user.id}">${user.username}</option>`
-                  ).join('')}
-                </select>
-              </div>
-              <div class="mb-2">
-                <textarea class="form-control" id="commentContent-${post.id}" placeholder="Write your comment..." required></textarea>
-              </div>
-              <div class="d-flex gap-2">
-                <button class="btn btn-sm btn-success" onclick="submitComment('${post.id}')">
-                  <i class="fas fa-paper-plane me-1"></i> Post Comment
-                </button>
-                <button class="btn btn-sm btn-secondary" onclick="toggleCommentForm('${post.id}')">
-                  <i class="fas fa-times me-1"></i> Cancel
-                </button>
-              </div>
-            </div>
-
-            <!-- Comments section -->
-            <div class="mt-3">
-              <div class="section-title">Comments</div>
-              ${ (post.comments||[]).map(comment => `
-                <div class="comment-item">
-                  <div class="d-flex justify-content-between align-items-start">
-                    <div class="user-info">${comment.username || 'Unknown User'}</div>
-                    <button class="btn btn-sm btn-danger" onclick="deleteComment('${comment.id}')">
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </div>
-                  <div>${comment.content}</div>
-                  <small class="timestamp">${new Date(comment.createdAt).toLocaleString()}</small>
-                </div>`).join("") || "<div class='text-center text-muted py-2'>No comments yet</div>" }
-            </div>
-          </div>
-        `).join("");
-      } catch (error) {
-        // Error already handled by handleApiCall
-      }
-    }
-
-    document.getElementById("postForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const button = e.target.querySelector('button');
-      const originalText = button.textContent;
-      
-      try {
-        button.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Posting...';
-        button.disabled = true;
-        
-        const data = {
-          userId: document.getElementById("postUserId").value,
-          content: document.getElementById("content").value
-        };
-        
-        await handleApiCall(
-          () => fetch(api+"/posts",{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify(data)
-          }),
-          'Post created successfully!'
-        );
-        
-        e.target.reset(); 
-        await initializeApp();
-      } catch (error) {
-        // Error already handled by handleApiCall
-      } finally {
-        button.innerHTML = '<i class="fas fa-paper-plane me-1"></i> Create Post';
-        button.disabled = false;
-      }
-    });
-
-    window.startEditPost = (id) => { 
-      document.querySelectorAll('.edit-form').forEach(form => form.style.display = 'none');
-      document.getElementById(`editPostForm-${id}`).style.display = "block"; 
-    };
-    
-    window.cancelEditPost = (id) => { 
-      document.getElementById(`editPostForm-${id}`).style.display = "none"; 
-    };
-    
-    window.savePost = async (id) => {
-      try {
-        const content = document.getElementById(`editPostContent-${id}`).value;
-        
-        await handleApiCall(
-          () => fetch(api+`/posts/${id}`,{
-            method:"PUT",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({content})
-          }),
-          'Post updated successfully!'
-        );
-        
-        cancelEditPost(id); 
-        await initializeApp();
-      } catch (error) {
-        // Error already handled by handleApiCall
-      }
-    };
-    
-    window.deletePost = async (id) => {
-      if(confirm("Delete this post and all its comments?")){
-        try {
-          await handleApiCall(
-            () => fetch(api+`/posts/${id}`,{method:"DELETE"}),
-            'Post deleted successfully!'
-          );
-          await initializeApp();
-        } catch (error) {
-          // Error already handled by handleApiCall
-        }
-      }
-    };
-
-    window.toggleCommentForm = (postId) => {
-      document.querySelectorAll('.comment-form').forEach(form => form.style.display = 'none');
-      const el = document.getElementById(`commentForm-${postId}`);
-      el.style.display = el.style.display === "block" ? "none" : "block";
-    };
-    
-    window.submitComment = async (postId) => {
-      try {
-        const userId = document.getElementById(`commentUserId-${postId}`).value;
-        const content = document.getElementById(`commentContent-${postId}`).value.trim();
-        
-        if(!userId || !content) {
-          showMessage('Please select a user and enter a comment', 'error');
-          return;
-        }
-        
-        await handleApiCall(
-          () => fetch(api+"/comments",{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({postId, userId, content})
-          }),
-          'Comment added successfully!'
-        );
-        
-        toggleCommentForm(postId);
-        await initializeApp();
-      } catch (error) {
-        // Error already handled by handleApiCall
-      }
-    };
-
-    // ==================== COMMENTS ====================
-    async function loadComments() {
-      try {
-        const comments = await handleApiCall(
-          () => fetch(api + "/comments"),
-          null
-        );
-        
-        document.getElementById("commentsList").innerHTML = 
-          comments.length > 0 ? 
-          comments.map(comment => `
-            <div class="comment-item mb-2">
-              <div class="d-flex justify-content-between align-items-start">
-                <div class="user-info">${comment.username || 'Unknown User'}</div>
-                <button class="btn btn-sm btn-danger" onclick="deleteComment('${comment.id}')">
-                  <i class="fas fa-trash"></i>
-                </button>
-              </div>
-              <div>${comment.content}</div>
-              <small class="timestamp">
-                On post: "${comment.postContent?.substring(0,50) || 'Unknown Post'}..." • 
-                ${new Date(comment.createdAt).toLocaleString()}
-              </small>
-            </div>
-          `).join("") : "<div class='text-center text-muted py-4'>No comments yet</div>";
-      } catch (error) {
-        // Error already handled by handleApiCall
-      }
-    }
-    
-    window.deleteComment = async (commentId) => {
-      if(confirm("Delete this comment?")){
-        try {
-          await handleApiCall(
-            () => fetch(api+`/comments/${commentId}`,{method:"DELETE"}),
-            'Comment deleted successfully!'
-          );
-          await initializeApp();
-        } catch (error) {
-          // Error already handled by handleApiCall
-        }
-      }
-    };
-
-    // ==================== FOLLOWERS ====================
-    async function loadFollowersData() {
-      try {
-        let followersHTML = '';
-        
-        for (const user of currentUsers) {
-          const [followers, following] = await Promise.all([
-            handleApiCall(() => fetch(api + `/followers/${user.id}`), null),
-            handleApiCall(() => fetch(api + `/following/${user.id}`), null)
-          ]);
-          
-          if (followers.length > 0 || following.length > 0) {
-            followersHTML += `
-              <div class="card mb-3">
-                <div class="card-body">
-                  <h5 class="card-title user-info">${user.username}</h5>
-                  
-                  ${followers.length > 0 ? `
-                    <div class="mt-2">
-                      <strong>Followers (${followers.length}):</strong>
-                      ${followers.map(f => `
-                        <div class="follow-info d-flex justify-content-between align-items-center">
-                          <span>${f.username || 'Unknown User'}</span>
-                          <button class="btn btn-sm btn-danger" onclick="unfollowUser('${f.followerId}', '${user.id}')">
-                            <i class="fas fa-user-times me-1"></i> Unfollow
-                          </button>
-                        </div>
-                      `).join('')}
-                    </div>
-                  ` : ''}
-                  
-                  ${following.length > 0 ? `
-                    <div class="mt-2">
-                      <strong>Following (${following.length}):</strong>
-                      ${following.map(f => `
-                        <div class="follow-info d-flex justify-content-between align-items-center">
-                          <span>${f.username || 'Unknown User'}</span>
-                          <button class="btn btn-sm btn-danger" onclick="unfollowUser('${user.id}', '${f.followedId}')">
-                            <i class="fas fa-user-times me-1"></i> Unfollow
-                          </button>
-                        </div>
-                      `).join('')}
-                    </div>
-                  ` : ''}
-                </div>
-              </div>
-            `;
-          }
-        }
-        
-        document.getElementById("followersList").innerHTML = 
-          followersHTML || "<div class='text-center text-muted py-4'>No follow relationships yet</div>";
-      } catch (error) {
-        // Error already handled by handleApiCall
-      }
-    }
-
-    document.getElementById("followForm").addEventListener("submit", async e => {
-      e.preventDefault();
-      const button = e.target.querySelector('button');
-      const originalText = button.textContent;
-      
-      try {
-        button.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Following...';
-        button.disabled = true;
-        
-        const followerId = document.getElementById("followerId").value;
-        const followedId = document.getElementById("followedId").value;
-        
-        if (followerId === followedId) {
-          showMessage("You cannot follow yourself!", 'error');
-          return;
-        }
-        
-        await handleApiCall(
-          () => fetch(api+"/followers",{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({followerId, followedId})
-          }),
-          'Followed successfully!'
-        );
-        
-        e.target.reset();
-        await initializeApp();
-      } catch (error) {
-        // Error already handled by handleApiCall
-      } finally {
-        button.innerHTML = '<i class="fas fa-user-plus me-1"></i> Follow User';
-        button.disabled = false;
-      }
-    });
-
-    window.unfollowUser = async (followerId, followedId) => {
-      if(confirm("Unfollow this user?")){
-        try {
-          await handleApiCall(
-            () => fetch(api+"/followers",{
-              method:"DELETE",
-              headers:{"Content-Type":"application/json"},
-              body:JSON.stringify({followerId, followedId})
-            }),
-            'Unfollowed successfully!'
-          );
-          
-          await initializeApp();
-        } catch (error) {
-          // Error already handled by handleApiCall
-        }
-      }
-    };
-
-    // Initialize the application
-    initializeApp();
-
-    // Refresh data every 30 seconds
-    setInterval(initializeApp, 30000);
   </script>
 </body>
 </html>
