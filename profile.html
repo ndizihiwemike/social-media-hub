@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ConnectHub - Profile</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #007bff;
+      --secondary: #6c757d;
+      --success: #28a745;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --info: #17a2b8;
+      --light: #f8f9fa;
+      --dark: #343a40;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f4f8, #e3e8ef);
+      color: #333;
+      padding-bottom: 2rem;
+    }
+    
+    .navbar {
+      box-shadow: 0 2px 10px rgba(0,0,0,.1);
+    }
+    
+    .profile-header {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    
+    .cover-photo {
+      height: 200px;
+      background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+      position: relative;
+    }
+    
+    .profile-avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: white;
+      border: 5px solid white;
+      position: absolute;
+      bottom: -75px;
+      left: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: bold;
+      color: var(--primary);
+      box-shadow: 0 4px 8px rgba(0,0,0,.1);
+    }
+    
+    .profile-info {
+      padding: 90px 30px 30px;
+    }
+    
+    .profile-name {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+    
+    .profile-username {
+      color: var(--secondary);
+      margin-bottom: 15px;
+    }
+    
+    .profile-bio {
+      margin-bottom: 20px;
+    }
+    
+    .profile-stats {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 20px;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    
+    .stat-label {
+      color: var(--secondary);
+      font-size: 0.9rem;
+    }
+    
+    .profile-actions {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .content-section {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .tab-content {
+      margin-top: 20px;
+    }
+    
+    .post-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    
+    .post-item {
+      aspect-ratio: 1/1;
+      background: #f0f0f0;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .post-item:hover .post-overlay {
+      opacity: 1;
+    }
+    
+    .post-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .post-stats {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .post-stat {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .followers-list, .following-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+    }
+    
+    .user-card {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+    
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 15px;
+    }
+    
+    .user-info {
+      flex-grow: 1;
+    }
+    
+    .user-name {
+      font-weight: 600;
+    }
+    
+    .user-username {
+      color: var(--secondary);
+      font-size: 0.9rem;
+    }
+    
+    .edit-form {
+      display: none;
+    }
+    
+    .form-floating {
+      margin-bottom: 15px;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: var(--secondary);
+    }
+    
+    .verified-badge {
+      color: var(--info);
+      margin-left: 5px;
+    }
+    
+    .profile-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--secondary);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .btn-following {
+      background-color: var(--secondary);
+      border-color: var(--secondary);
+      color: white;
+    }
+
+    .post-media {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="dashboard.html"><i class="fas fa-users me-2"></i>ConnectHub</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="dashboard.html"><i class="fas fa-home me-1"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#"><i class="fas fa-user-circle me-1"></i> Profile</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+              <div class="user-avatar" id="navbarAvatar">U</div>
+              <span id="navbarUsername">User</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#" id="profileLink"><i class="fas fa-user me-2"></i> Profile</a></li>
+              <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#" id="logoutLink"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <!-- Profile Header -->
+    <div class="profile-header">
+      <div class="cover-photo">
+        <div class="profile-avatar" id="profileAvatar">
+          <div class="loading" id="avatarLoading">
+            <div class="spinner-border spinner-border-sm" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="profile-info">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h1 class="profile-name" id="profileName">
+              <div class="loading" id="nameLoading">
+                <div class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            </h1>
+            <div class="profile-username" id="profileUsername">
+              <div class="loading" id="usernameLoading">
+                <div class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            </div>
+            <div class="profile-bio" id="profileBio">
+              <div class="loading" id="bioLoading">
+                <div class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="profile-stats">
+              <div class="stat-item">
+                <div class="stat-number" id="postsCount">0</div>
+                <div class="stat-label">Posts</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number" id="followersCount">0</div>
+                <div class="stat-label">Followers</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number" id="followingCount">0</div>
+                <div class="stat-label">Following</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="profile-actions">
+            <button class="btn btn-primary" id="followBtn" style="display: none;">
+              <i class="fas fa-user-plus me-1"></i> Follow
+            </button>
+            <button class="btn btn-outline-secondary" id="messageBtn" style="display: none;">
+              <i class="fas fa-envelope me-1"></i> Message
+            </button>
+            <button class="btn btn-outline-secondary" id="editProfileBtn" style="display: none;">
+              <i class="fas fa-edit me-1"></i> Edit Profile
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Profile Content -->
+    <div class="content-section">
+      <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="posts-tab" data-bs-toggle="tab" data-bs-target="#posts" type="button" role="tab">
+            <i class="fas fa-th me-1"></i> Posts
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="followers-tab" data-bs-toggle="tab" data-bs-target="#followers" type="button" role="tab">
+            <i class="fas fa-users me-1"></i> Followers
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="following-tab" data-bs-toggle="tab" data-bs-target="#following" type="button" role="tab">
+            <i class="fas fa-user-friends me-1"></i> Following
+          </button>
+        </li>
+      </ul>
+      
+      <div class="tab-content" id="profileTabContent">
+        <!-- Posts Tab -->
+        <div class="tab-pane fade show active" id="posts" role="tabpanel">
+          <div id="viewProfile">
+            <div class="post-grid" id="postsGrid">
+              <div class="loading" id="postsLoading">
+                <div class="spinner-border text-primary mb-3" role="status">
+                  <span class="visually-hidden">Loading posts...</span>
+                </div>
+                <p>Loading posts...</p>
+              </div>
+            </div>
+          </div>
+          
+          <div id="editProfile" class="edit-form">
+            <h4>Edit Profile</h4>
+            <form id="profileEditForm">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="editUsername" placeholder="Username">
+                <label for="editUsername">Username</label>
+              </div>
+              <div class="form-floating">
+                <input type="email" class="form-control" id="editEmail" placeholder="Email">
+                <label for="editEmail">Email</label>
+              </div>
+              <div class="form-floating">
+                <textarea class="form-control" id="editBio" placeholder="Bio" style="height: 100px"></textarea>
+                <label for="editBio">Bio</label>
+              </div>
+              <div class="form-floating">
+                <input type="password" class="form-control" id="editPassword" placeholder="Password">
+                <label for="editPassword">New Password (optional)</label>
+              </div>
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="button" class="btn btn-secondary" id="cancelEditBtn">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+        
+        <!-- Followers Tab -->
+        <div class="tab-pane fade" id="followers" role="tabpanel">
+          <div class="followers-list" id="followersList">
+            <div class="loading" id="followersLoading">
+              <div class="spinner-border text-primary mb-3" role="status">
+                <span class="visually-hidden">Loading followers...</span>
+              </div>
+              <p>Loading followers...</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Following Tab -->
+        <div class="tab-pane fade" id="following" role="tabpanel">
+          <div class="following-list" id="followingList">
+            <div class="loading" id="followingLoading">
+              <div class="spinner-border text-primary mb-3" role="status">
+                <span class="visually-hidden">Loading following...</span>
+              </div>
+              <p>Loading following...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    const api = "http://localhost:5000";
+    let currentUser = null;
+    let profileUser = null;
+    let currentUsers = [];
+    let isOwnProfile = false;
+    let isFollowing = false;
+    
+    // Check if user is logged in
+    function checkAuth() {
+      const user = localStorage.getItem('currentUser');
+      if (!user) {
+        window.location.href = 'register.html';
+        return false;
+      }
+      try {
+        currentUser = JSON.parse(user);
+        return true;
+      } catch (e) {
+        console.error('Error parsing user data:', e);
+        window.location.href = 'register.html';
+        return false;
+      }
+    }
+    
+    // Show message function
+    function showMessage(message, type = 'success') {
+      // Remove any existing messages first
+      const existingAlerts = document.querySelectorAll('.alert');
+      existingAlerts.forEach(alert => alert.remove());
+      
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
+      alertDiv.style.top = '70px';
+      alertDiv.style.right = '20px';
+      alertDiv.style.zIndex = '1050';
+      alertDiv.style.maxWidth = '300px';
+      alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+      
+      document.body.appendChild(alertDiv);
+      
+      setTimeout(() => {
+        if (alertDiv.parentNode) {
+          alertDiv.remove();
+        }
+      }, 5000);
+    }
+    
+    // Get profile user ID from URL
+    function getProfileUserId() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const idFromUrl = urlParams.get('id');
+      return idFromUrl || (currentUser ? currentUser.id : null);
+    }
+    
+    // Check if this is the user's own profile
+    function checkIfOwnProfile() {
+      isOwnProfile = profileUser && currentUser && profileUser.id === currentUser.id;
+    }
+    
+    // Check if current user is following profile user
+    async function checkIfFollowing() {
+      if (!currentUser || !profileUser || isOwnProfile) {
+        isFollowing = false;
+        return;
+      }
+      
+      try {
+        const response = await fetch(`${api}/following/${currentUser.id}`);
+        if (response.ok) {
+          const following = await response.json();
+          isFollowing = following.some(follow => follow.followedId === profileUser.id);
+        }
+      } catch (error) {
+        console.error('Error checking follow status:', error);
+        isFollowing = false;
+      }
+    }
+    
+    // Initialize navbar
+    function initializeNavbar() {
+      if (!currentUser) return;
+      
+      // Set user avatar (first letter of username)
+      const userInitial = currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'U';
+      
+      // Update navbar
+      document.getElementById('navbarAvatar').textContent = userInitial;
+      document.getElementById('navbarUsername').textContent = currentUser.username || 'User';
+      
+      // Set profile link to current user's profile
+      document.getElementById('profileLink').href = `profile.html?id=${currentUser.id}`;
+    }
+    
+    // Load profile user
+    async function loadProfileUser() {
+  try {
+    showProfileLoading();
+    
+    // Get profile user ID
+    const profileUserId = getProfileUserId();
+    
+    // Validate that we have a valid ID
+    if (!profileUserId) {
+      throw new Error('No user ID specified');
+    }
+    
+    console.log('Loading profile for user ID:', profileUserId);
+    
+    const response = await fetch(`${api}/users/${profileUserId}`);
+    
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('User not found');
+      }
+      throw new Error(`Failed to load user profile: ${response.status}`);
+    }
+    
+    profileUser = await response.json();
+    console.log('Profile user loaded:', profileUser);
+    
+    checkIfOwnProfile();
+    await checkIfFollowing();
+    
+    // Update profile header
+    updateProfileHeader();
+    
+    // Load profile content
+    await Promise.all([
+      loadUserPosts(),
+      loadUserFollowers(),
+      loadUserFollowing()
+    ]);
+    
+    hideProfileLoading();
+    
+  } catch (error) {
+    console.error('Error loading profile:', error);
+    showProfileError(error.message);
+    
+    // If user not found, redirect to dashboard after delay
+    if (error.message === 'User not found') {
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 3000);
+    }
+  }
+}
+
+// Utility: safely set display style
+function safeDisplay(id, value) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.style.display = value;
+  }
+}
+
+// Show profile loading state
+function showProfileLoading() {
+  safeDisplay('avatarLoading', 'block');
+  safeDisplay('nameLoading', 'block');
+  safeDisplay('usernameLoading', 'block');
+  safeDisplay('bioLoading', 'block');
+}
+
+// Hide profile loading state
+function hideProfileLoading() {
+  safeDisplay('avatarLoading', 'none');
+  safeDisplay('nameLoading', 'none');
+  safeDisplay('usernameLoading', 'none');
+  safeDisplay('bioLoading', 'none');
+}
+
+// Show profile error state
+function showProfileError(message) {
+  const nameEl = document.getElementById('profileName');
+  const usernameEl = document.getElementById('profileUsername');
+  const bioEl = document.getElementById('profileBio');
+
+  if (nameEl) {
+    nameEl.innerHTML = `<span class="text-danger">Error loading profile</span>`;
+  }
+  if (usernameEl) {
+    usernameEl.innerHTML = `<span class="text-muted">${message}</span>`;
+  }
+  if (bioEl) {
+    bioEl.innerHTML = `<span class="text-muted">Please try again later</span>`;
+  }
+
+  hideProfileLoading();
+}
+
+    // Update profile header
+    function updateProfileHeader() {
+      if (!profileUser) return;
+      
+      // Set user avatar (first letter of username)
+      const userInitial = profileUser.username ? profileUser.username.charAt(0).toUpperCase() : 'U';
+      
+      // Update profile info
+      document.getElementById('profileAvatar').innerHTML = userInitial;
+      document.getElementById('profileName').textContent = profileUser.fullName || profileUser.username || 'User Name';
+      document.getElementById('profileUsername').textContent = `@${profileUser.username}`;
+      document.getElementById('profileBio').textContent = profileUser.bio || 'No bio yet.';
+      
+      // Update profile actions
+      const followBtn = document.getElementById('followBtn');
+      const messageBtn = document.getElementById('messageBtn');
+      const editProfileBtn = document.getElementById('editProfileBtn');
+      
+      if (isOwnProfile) {
+        followBtn.style.display = 'none';
+        messageBtn.style.display = 'none';
+        editProfileBtn.style.display = 'block';
+      } else {
+        followBtn.style.display = 'block';
+        messageBtn.style.display = 'block';
+        editProfileBtn.style.display = 'none';
+        
+        // Update follow button based on follow status
+        if (isFollowing) {
+          followBtn.innerHTML = '<i class="fas fa-user-check me-1"></i> Following';
+          followBtn.classList.remove('btn-primary');
+          followBtn.classList.add('btn-following');
+        } else {
+          followBtn.innerHTML = '<i class="fas fa-user-plus me-1"></i> Follow';
+          followBtn.classList.remove('btn-following');
+          followBtn.classList.add('btn-primary');
+        }
+      }
+    }
+    
+    // Load user posts
+    async function loadUserPosts() {
+      try {
+        const response = await fetch(`${api}/posts?userId=${profileUser.id}`);
+        if (!response.ok) throw new Error(`Failed to load user posts: ${response.status}`);
+        
+        const posts = await response.json();
+        console.log('User posts loaded:', posts.length);
+        
+        // Update posts count
+        document.getElementById('postsCount').textContent = posts.length;
+        
+        // Display posts
+        displayPosts(posts);
+        
+      } catch (error) {
+        console.error('Error loading posts:', error);
+        document.getElementById('postsGrid').innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-exclamation-triangle text-warning"></i>
+            <h5>Failed to load posts</h5>
+            <p class="text-muted">${error.message}</p>
+          </div>
+        `;
+      }
+    }
+    
+    // Display posts
+    function displayPosts(posts) {
+      const postsGrid = document.getElementById('postsGrid');
+      
+      if (!posts || posts.length === 0) {
+        postsGrid.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-newspaper text-muted"></i>
+            <h5>No posts yet</h5>
+            <p class="text-muted">This user hasn't posted anything yet.</p>
+            ${isOwnProfile ? '<button class="btn btn-primary mt-2" onclick="window.location.href=\'dashboard.html\'">Create your first post</button>' : ''}
+          </div>
+        `;
+        return;
+      }
+      
+      const postsHTML = posts.map(post => {
+        // Check if post has media
+        const hasMedia = post.media && post.media.length > 0;
+        const firstMedia = hasMedia ? post.media[0] : null;
+        
+        return `
+          <div class="post-item" onclick="viewPost('${post.id}')">
+            <div class="post-overlay">
+              <div class="post-stats">
+                <div class="post-stat">
+                  <i class="fas fa-heart"></i>
+                  <span>${post.likesCount || 0}</span>
+                </div>
+                <div class="post-stat">
+                  <i class="fas fa-comment"></i>
+                  <span>${post.comments ? post.comments.length : 0}</span>
+                </div>
+              </div>
+            </div>
+            ${hasMedia && firstMedia.type === 'image' ? 
+              `<img src="${firstMedia.url}" alt="Post image" class="post-media" onerror="this.style.display='none'">` :
+              `<div style="height: 100%; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-${hasMedia ? 'video' : 'file-alt'} fa-2x text-muted"></i>
+              </div>`
+            }
+          </div>
+        `;
+      }).join('');
+      
+      postsGrid.innerHTML = postsHTML;
+    }
+    
+    // View post details
+    function viewPost(postId) {
+      // In a real app, this would navigate to a post detail page
+      showMessage('Post detail view coming soon!');
+    }
+    
+    // Load user followers
+    async function loadUserFollowers() {
+      try {
+        const response = await fetch(`${api}/followers/${profileUser.id}`);
+        if (!response.ok) throw new Error(`Failed to load followers: ${response.status}`);
+        
+        const followers = await response.json();
+        console.log('User followers loaded:', followers.length);
+        
+        // Update followers count
+        document.getElementById('followersCount').textContent = followers.length;
+        
+        // Display followers
+        displayFollowers(followers);
+        
+      } catch (error) {
+        console.error('Error loading followers:', error);
+        document.getElementById('followersList').innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-exclamation-triangle text-warning"></i>
+            <h5>Failed to load followers</h5>
+            <p class="text-muted">${error.message}</p>
+          </div>
+        `;
+      }
+    }
+    
+    // Display followers
+    function displayFollowers(followers) {
+      const followersList = document.getElementById('followersList');
+      
+      if (!followers || followers.length === 0) {
+        followersList.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-users text-muted"></i>
+            <h5>No followers yet</h5>
+            <p class="text-muted">This user doesn't have any followers yet.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      const followersHTML = followers.map(follower => {
+        const userInitial = follower.username ? follower.username.charAt(0).toUpperCase() : 'U';
+        const isCurrentUser = currentUser && follower.id === currentUser.id;
+        
+        return `
+          <div class="user-card">
+            <div class="user-avatar">${userInitial}</div>
+            <div class="user-info">
+              <div class="user-name">${follower.username || 'Unknown User'}</div>
+              <div class="user-username">@${follower.username}</div>
+            </div>
+            ${!isOwnProfile && !isCurrentUser ? `
+              <button class="btn btn-sm btn-primary" onclick="followUser('${follower.id}')">
+                Follow
+              </button>
+            ` : ''}
+            ${isOwnProfile && !isCurrentUser ? `
+              <button class="btn btn-sm btn-danger" onclick="removeFollower('${follower.id}')">
+                Remove
+              </button>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+      
+      followersList.innerHTML = followersHTML;
+    }
+    
+    // Load user following
+    async function loadUserFollowing() {
+      try {
+        const response = await fetch(`${api}/following/${profileUser.id}`);
+        if (!response.ok) throw new Error(`Failed to load following: ${response.status}`);
+        
+        const following = await response.json();
+        console.log('User following loaded:', following.length);
+        
+        // Update following count
+        document.getElementById('followingCount').textContent = following.length;
+        
+        // Display following
+        displayFollowing(following);
+        
+      } catch (error) {
+        console.error('Error loading following:', error);
+        document.getElementById('followingList').innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-exclamation-triangle text-warning"></i>
+            <h5>Failed to load following</h5>
+            <p class="text-muted">${error.message}</p>
+          </div>
+        `;
+      }
+    }
+    
+    // Display following
+    function displayFollowing(following) {
+      const followingList = document.getElementById('followingList');
+      
+      if (!following || following.length === 0) {
+        followingList.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-user-friends text-muted"></i>
+            <h5>Not following anyone yet</h5>
+            <p class="text-muted">This user isn't following anyone yet.</p>
+          </div>
+        `;
+        return;
+      }
+      
+      const followingHTML = following.map(user => {
+        const userInitial = user.username ? user.username.charAt(0).toUpperCase() : 'U';
+        const isCurrentUser = currentUser && user.id === currentUser.id;
+        
+        return `
+          <div class="user-card">
+            <div class="user-avatar">${userInitial}</div>
+            <div class="user-info">
+              <div class="user-name">${user.username || 'Unknown User'}</div>
+              <div class="user-username">@${user.username}</div>
+            </div>
+            ${!isOwnProfile && !isCurrentUser ? `
+              <button class="btn btn-sm btn-primary" onclick="followUser('${user.id}')">
+                Follow
+              </button>
+            ` : ''}
+            ${isOwnProfile && !isCurrentUser ? `
+              <button class="btn btn-sm btn-danger" onclick="unfollowUser('${user.id}')">
+                Unfollow
+              </button>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+      
+      followingList.innerHTML = followingHTML;
+    }
+    
+    // Follow user
+    async function followUser(userId) {
+      try {
+        const response = await fetch(`${api}/followers`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            followerId: currentUser.id,
+            followedId: userId
+          })
+        });
+        
+        if (response.ok) {
+          showMessage('Followed successfully!');
+          
+          // Update follow status and refresh data
+          if (userId === profileUser.id) {
+            isFollowing = true;
+            updateProfileHeader();
+          }
+          
+          // Refresh data
+          await Promise.all([
+            loadUserFollowers(),
+            loadUserFollowing()
+          ]);
+          
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to follow user');
+        }
+      } catch (error) {
+        console.error('Error following user:', error);
+        showMessage(error.message, 'error');
+      }
+    }
+    
+    // Unfollow user
+    async function unfollowUser(userId) {
+      if (!confirm('Are you sure you want to unfollow this user?')) return;
+      
+      try {
+        const response = await fetch(`${api}/followers`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            followerId: currentUser.id,
+            followedId: userId
+          })
+        });
+        
+        if (response.ok) {
+          showMessage('Unfollowed successfully!');
+          
+          // Update follow status and refresh data
+          if (userId === profileUser.id) {
+            isFollowing = false;
+            updateProfileHeader();
+          }
+          
+          // Refresh data
+          await Promise.all([
+            loadUserFollowers(),
+            loadUserFollowing()
+          ]);
+          
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to unfollow user');
+        }
+      } catch (error) {
+        console.error('Error unfollowing user:', error);
+        showMessage(error.message, 'error');
+      }
+    }
+    
+    // Remove follower
+    async function removeFollower(followerId) {
+      if (!confirm('Are you sure you want to remove this follower?')) return;
+      
+      try {
+        const response = await fetch(`${api}/followers`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            followerId: followerId,
+            followedId: currentUser.id
+          })
+        });
+        
+        if (response.ok) {
+          showMessage('Follower removed successfully!');
+          // Refresh followers list
+          await loadUserFollowers();
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to remove follower');
+        }
+      } catch (error) {
+        console.error('Error removing follower:', error);
+        showMessage(error.message, 'error');
+      }
+    }
+    
+    // Toggle edit profile view
+    function toggleEditProfile() {
+      const viewProfile = document.getElementById('viewProfile');
+      const editProfile = document.getElementById('editProfile');
+      
+      if (editProfile.style.display === 'block') {
+        viewProfile.style.display = 'block';
+        editProfile.style.display = 'none';
+      } else {
+        viewProfile.style.display = 'none';
+        editProfile.style.display = 'block';
+        
+        // Populate edit form with current user data
+        document.getElementById('editUsername').value = profileUser.username;
+        document.getElementById('editEmail').value = profileUser.email;
+        document.getElementById('editBio').value = profileUser.bio || '';
+      }
+    }
+    
+    // Save profile changes
+    async function saveProfileChanges() {
+      try {
+        const username = document.getElementById('editUsername').value;
+        const email = document.getElementById('editEmail').value;
+        const bio = document.getElementById('editBio').value;
+        const password = document.getElementById('editPassword').value;
+        
+        if (!username || !email) {
+          throw new Error('Username and email are required');
+        }
+        
+        const data = { username, email, bio };
+        if (password) data.password = password;
+        
+        const response = await fetch(`${api}/users/${profileUser.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        
+        if (response.ok) {
+          showMessage('Profile updated successfully!');
+          
+          // Update current user if editing own profile
+          if (isOwnProfile) {
+            const updatedUser = await response.json();
+            localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+            currentUser = updatedUser;
+            initializeNavbar();
+          }
+          
+          // Reload profile user data
+          await loadProfileUser();
+          
+          // Switch back to view mode
+          toggleEditProfile();
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to update profile');
+        }
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        showMessage(error.message, 'error');
+      }
+    }
+    
+    // Initialize the app
+    async function initializeApp() {
+      if (!checkAuth()) return;
+      
+      initializeNavbar();
+      
+      // Check if we're in edit mode
+      const urlParams = new URLSearchParams(window.location.search);
+      const isEditMode = urlParams.get('edit') === 'true';
+      
+      // Load profile user
+      await loadProfileUser();
+      
+      // If in edit mode and it's the user's own profile, show edit form
+      if (isEditMode && isOwnProfile) {
+        toggleEditProfile();
+      }
+    }
+    
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', initializeApp);
+    
+    // Logout
+    document.getElementById('logoutLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.removeItem('currentUser');
+      window.location.href = 'register.html';
+    });
+    
+    // Follow button
+    document.getElementById('followBtn').addEventListener('click', function() {
+      if (profileUser) {
+        if (isFollowing) {
+          unfollowUser(profileUser.id);
+        } else {
+          followUser(profileUser.id);
+        }
+      }
+    });
+    
+    // Message button
+    document.getElementById('messageBtn').addEventListener('click', function() {
+      showMessage('Messaging feature coming soon!');
+    });
+    
+    // Edit profile button
+    document.getElementById('editProfileBtn').addEventListener('click', function() {
+      toggleEditProfile();
+    });
+    
+    // Cancel edit button
+    document.getElementById('cancelEditBtn').addEventListener('click', function() {
+      toggleEditProfile();
+    });
+    
+    // Profile edit form
+    document.getElementById('profileEditForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      saveProfileChanges();
+    });
+
+    // Tab change event
+    document.getElementById('profileTabs').addEventListener('shown.bs.tab', function(event) {
+      const target = event.target.getAttribute('data-bs-target');
+      
+      // Refresh data when switching tabs
+      if (target === '#followers') {
+        loadUserFollowers();
+      } else if (target === '#following') {
+        loadUserFollowing();
+      } else if (target === '#posts') {
+        loadUserPosts();
+      }
+    });
+  </script>
+</body>
+</html>

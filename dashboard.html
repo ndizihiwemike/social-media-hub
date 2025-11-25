@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ConnectHub - Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #007bff;
+      --secondary: #6c757d;
+      --success: #28a745;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --info: #17a2b8;
+      --light: #f8f9fa;
+      --dark: #343a40;
+    }
+    
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #f0f4f8, #e3e8ef);
+      color: #333;
+      padding-bottom: 2rem;
+    }
+    
+    .navbar {
+      box-shadow: 0 2px 10px rgba(0,0,0,.1);
+    }
+    
+    .sidebar {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      position: sticky;
+      top: 80px;
+    }
+    
+    .main-content {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .card {
+      box-shadow: 0 4px 12px rgba(0,0,0,.1);
+      border: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-bottom: 1.5rem;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0,0,0,.15);
+    }
+    
+    .section-title {
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 8px;
+      margin-top: 20px;
+      color: var(--dark);
+      font-weight: 600;
+    }
+    
+    .user-info {
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    
+    .timestamp {
+      font-size: 12px;
+      color: var(--secondary);
+      margin-top: 4px;
+    }
+    
+    .post {
+      background: #f9fafc;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      border: 1px solid #e0e0e0;
+    }
+    
+    .comment-item {
+      background: #e8f4fd;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      border-left: 4px solid var(--primary);
+    }
+    
+    .follow-info {
+      background: #e8f5e8;
+      padding: 8px;
+      border-radius: 6px;
+      margin: 5px 0;
+      font-size: 13px;
+    }
+    
+    .edit-form, .comment-form, .feedback-form {
+      display: none;
+      margin-top: 12px;
+      padding: 12px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: var(--secondary);
+    }
+    
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 10px;
+      border-radius: 6px;
+      margin: 10px 0;
+    }
+    
+    .success-msg {
+      background: #d1edff;
+      color: #155724;
+      padding: 10px;
+      border-radius: 6px;
+      margin: 10px 0;
+    }
+    
+    .navbar-brand {
+      font-weight: 700;
+    }
+    
+    .feature-icon {
+      font-size: 1.5rem;
+      margin-right: 10px;
+    }
+    
+    .stat-item {
+      background: #e9ecef;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      margin-right: 8px;
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+    
+    .post-image {
+      width: 100%;
+      border-radius: 8px;
+      margin: 10px 0;
+      max-height: 500px;
+      object-fit: cover;
+    }
+    
+    .post-video {
+      width: 100%;
+      border-radius: 8px;
+      margin: 10px 0;
+      max-height: 500px;
+    }
+    
+    .action-btn {
+      background: none;
+      border: none;
+      color: var(--secondary);
+      font-size: 1.2rem;
+      margin-right: 15px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    
+    .action-btn:hover {
+      color: var(--primary);
+    }
+    
+    .action-btn.liked {
+      color: var(--danger);
+    }
+    
+    .suggestion-card {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .suggestion-card:last-child {
+      border-bottom: none;
+    }
+    
+    .suggestion-info {
+      flex-grow: 1;
+      margin-left: 10px;
+    }
+    
+    .suggestion-username {
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    
+    .suggestion-fullname {
+      color: var(--secondary);
+      font-size: 0.8rem;
+    }
+    
+    .btn-follow {
+      font-size: 0.8rem;
+      padding: 4px 12px;
+    }
+    
+    .story-container {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding: 10px 0;
+    }
+    
+    .story-item {
+      flex: 0 0 auto;
+      width: 70px;
+      text-align: center;
+    }
+    
+    .story-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+      padding: 2px;
+      margin-bottom: 5px;
+    }
+    
+    .story-avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--dark);
+    }
+    
+    .story-username {
+      font-size: 0.7rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    
+    .new-story {
+      background: var(--primary);
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 5px;
+    }
+
+    .media-preview-item {
+      position: relative;
+      margin-bottom: 10px;
+    }
+
+    .media-preview-item img,
+    .media-preview-item video {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .remove-media-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: rgba(220, 53, 69, 0.9);
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .upload-progress {
+      height: 4px;
+      background: #e9ecef;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 5px;
+    }
+
+    .upload-progress-bar {
+      height: 100%;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .media-type-badge {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="dashboard.html"><i class="fas fa-users me-2"></i>ConnectHub</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="dashboard.html"><i class="fas fa-home me-1"></i> Home</a>
+          </li>
+        
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="profileLink"><i class="fas fa-user-circle me-1"></i> Profile</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+              <div class="user-avatar" id="navbarAvatar">U</div>
+              <span id="navbarUsername">User</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#" id="profileDropdownLink"><i class="fas fa-user me-2"></i> Profile</a></li>
+              <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#" id="logoutLink"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <div class="row">
+      <!-- Left Sidebar -->
+      <div class="col-lg-3 d-none d-lg-block">
+        <div class="sidebar">
+          <div class="d-flex align-items-center mb-3">
+            <div class="user-avatar" id="sidebarAvatar">U</div>
+            <div>
+              <div class="fw-bold" id="sidebarUsername">Username</div>
+              <small class="text-muted" id="sidebarFullname">Full Name</small>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <div class="text-center">
+              <div class="fw-bold" id="postsCount">0</div>
+              <small class="text-muted">Posts</small>
+            </div>
+            <div class="text-center">
+              <div class="fw-bold" id="followersCount">0</div>
+              <small class="text-muted">Followers</small>
+            </div>
+            <div class="text-center">
+              <div class="fw-bold" id="followingCount">0</div>
+              <small class="text-muted">Following</small>
+            </div>
+          </div>
+          <a href="#" class="btn btn-outline-primary btn-sm w-100" id="editProfileBtn">
+            <i class="fas fa-edit me-1"></i> Edit Profile
+          </a>
+        </div>
+        
+        <div class="sidebar">
+          <h6 class="fw-bold mb-3">Suggestions for you</h6>
+          <div id="suggestionsList">
+            <!-- Suggestions will be loaded here -->
+          </div>
+        </div>
+      </div>
+      
+      <!-- Main Content -->
+      <div class="col-lg-6">
+        <!-- Create Post -->
+        <div class="main-content">
+          <div class="d-flex align-items-center mb-3">
+            <div class="user-avatar" id="createPostAvatar">U</div>
+            <input type="text" class="form-control ms-3" id="postContentInput" placeholder="What's on your mind?" readonly>
+            <button class="btn btn-primary ms-2" id="createPostBtn">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+          
+          <div class="d-flex justify-content-around border-top pt-2">
+            <button class="btn btn-sm text-muted" id="addPhotoBtn">
+              <i class="fas fa-image me-1"></i> Photo
+            </button>
+            <button class="btn btn-sm text-muted" id="addVideoBtn">
+              <i class="fas fa-video me-1"></i> Video
+            </button>
+            <button class="btn btn-sm text-muted" id="addLocationBtn">
+              <i class="fas fa-map-marker-alt me-1"></i> Location
+            </button>
+            <button class="btn btn-sm text-muted" id="addMoodBtn">
+              <i class="fas fa-smile me-1"></i> Mood
+            </button>
+          </div>
+        </div>
+        
+        <!-- Stories -->
+        <div class="main-content">
+          <div class="story-container" id="storiesContainer">
+            <!-- Stories will be loaded here -->
+          </div>
+        </div>
+        
+        <!-- Posts Feed -->
+        <div id="postsFeed">
+          <!-- Posts will be loaded here -->
+        </div>
+      </div>
+      
+      <!-- Right Sidebar -->
+      <div class="col-lg-3 d-none d-lg-block">
+        <div class="sidebar">
+          <h6 class="fw-bold mb-3">Trending Topics</h6>
+          <div class="mb-2">
+            <a href="#" class="text-decoration-none">
+              <span class="badge bg-primary me-1">#</span>Technology
+            </a>
+          </div>
+          <div class="mb-2">
+            <a href="#" class="text-decoration-none">
+              <span class="badge bg-primary me-1">#</span>Travel
+            </a>
+          </div>
+          <div class="mb-2">
+            <a href="#" class="text-decoration-none">
+              <span class="badge bg-primary me-1">#</span>Food
+            </a>
+          </div>
+          <div class="mb-2">
+            <a href="#" class="text-decoration-none">
+              <span class="badge bg-primary me-1">#</span>Fashion
+            </a>
+          </div>
+          <div class="mb-2">
+            <a href="#" class="text-decoration-none">
+              <span class="badge bg-primary me-1">#</span>Sports
+            </a>
+          </div>
+        </div>
+        
+        <div class="sidebar">
+          <h6 class="fw-bold mb-3">Online Friends</h6>
+          <div id="onlineFriendsList">
+            <!-- Online friends will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Post Modal -->
+  <div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="createPostModalLabel">Create Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex mb-3">
+            <div class="user-avatar" id="modalAvatar">U</div>
+            <div class="ms-3">
+              <div class="fw-bold" id="modalUsername">Username</div>
+              <select class="form-select form-select-sm w-auto" id="postVisibility">
+                <option value="public" selected>Public</option>
+                <option value="friends">Friends</option>
+                <option value="private">Only Me</option>
+              </select>
+            </div>
+          </div>
+          
+          <textarea class="form-control" id="modalPostContent" rows="4" placeholder="What's on your mind?"></textarea>
+          
+          <!-- Media Preview -->
+          <div id="mediaPreview" class="mt-3" style="display: none;">
+            <h6 class="fw-bold mb-2">Media Preview</h6>
+            <div id="mediaPreviewContainer">
+              <!-- Media previews will be added here -->
+            </div>
+            <div class="upload-progress" id="uploadProgress" style="display: none;">
+              <div class="upload-progress-bar" id="uploadProgressBar" style="width: 0%"></div>
+            </div>
+          </div>
+          
+          <!-- Mood Input -->
+          <div class="mt-3" id="moodSection" style="display: none;">
+            <label class="form-label">How are you feeling?</label>
+            <input type="text" class="form-control" id="postMood" placeholder="e.g., Happy, Excited, Thoughtful...">
+          </div>
+          
+          <!-- Location Input -->
+          <div class="mt-3" id="locationSection" style="display: none;">
+            <label class="form-label">Add Location</label>
+            <input type="text" class="form-control" id="postLocation" placeholder="Where are you?">
+          </div>
+          
+          <!-- Hashtags Input -->
+          <div class="mt-3">
+            <label class="form-label">Hashtags (separate with commas)</label>
+            <input type="text" class="form-control" id="postHashtags" placeholder="e.g., travel, food, fun">
+          </div>
+          
+          <div class="mt-3">
+            <input type="file" id="mediaUpload" multiple accept="image/*,video/*" style="display: none;">
+            <button type="button" class="btn btn-outline-primary btn-sm me-2" id="selectMediaBtn">
+              <i class="fas fa-image me-1"></i> Photo/Video
+            </button>
+            <button type="button" class="btn btn-outline-secondary btn-sm me-2" id="addLocationModalBtn">
+              <i class="fas fa-map-marker-alt me-1"></i> Location
+            </button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" id="addMoodModalBtn">
+              <i class="fas fa-smile me-1"></i> Mood
+            </button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="submitPostBtn">
+            <i class="fas fa-paper-plane me-1"></i> Post
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    const api = "http://localhost:5000";
+    let currentUser = null;
+    let currentUsers = [];
+    let posts = [];
+    let selectedFiles = [];
+    
+    // Check if user is logged in
+    function checkAuth() {
+      const user = localStorage.getItem('currentUser');
+      if (!user) {
+        window.location.href = 'register.html';
+        return false;
+      }
+      try {
+        currentUser = JSON.parse(user);
+        return true;
+      } catch (e) {
+        console.error('Error parsing user data:', e);
+        window.location.href = 'register.html';
+        return false;
+      }
+    }
+    
+    // Show message function
+    function showMessage(message, type = 'success') {
+      // Remove any existing messages first
+      const existingAlerts = document.querySelectorAll('.alert');
+      existingAlerts.forEach(alert => alert.remove());
+      
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type === 'error' ? 'danger' : type} alert-dismissible fade show position-fixed`;
+      alertDiv.style.top = '70px';
+      alertDiv.style.right = '20px';
+      alertDiv.style.zIndex = '1050';
+      alertDiv.style.maxWidth = '300px';
+      alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      `;
+      
+      document.body.appendChild(alertDiv);
+      
+      setTimeout(() => {
+        if (alertDiv.parentNode) {
+          alertDiv.remove();
+        }
+      }, 5000);
+    }
+    
+    // Check server health
+    async function checkServerHealth() {
+      try {
+        const response = await fetch(`${api}/health`);
+        if (!response.ok) throw new Error('Server not responding');
+        const data = await response.json();
+        console.log('Server status:', data);
+        return true;
+      } catch (error) {
+        console.error('Server health check failed:', error);
+        showMessage('Server connection failed. Please make sure the backend server is running on port 5000.', 'error');
+        return false;
+      }
+    }
+    
+    // Initialize user info in navbar and sidebar
+    function initializeUserInfo() {
+      if (!currentUser) return;
+      
+      // Set user avatar (first letter of username)
+      const userInitial = currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'U';
+      
+      // Update navbar
+      document.getElementById('navbarAvatar').textContent = userInitial;
+      document.getElementById('navbarUsername').textContent = currentUser.username || 'User';
+      
+      // Update sidebar
+      document.getElementById('sidebarAvatar').textContent = userInitial;
+      document.getElementById('sidebarUsername').textContent = currentUser.username || 'Username';
+      document.getElementById('sidebarFullname').textContent = currentUser.fullName || currentUser.email || 'Full Name';
+      
+      // Update modal
+      document.getElementById('modalAvatar').textContent = userInitial;
+      document.getElementById('modalUsername').textContent = currentUser.username || 'Username';
+      
+      // Update create post area
+      document.getElementById('createPostAvatar').textContent = userInitial;
+    }
+    
+    // Load users
+    async function loadUsers() {
+      try {
+        console.log('Loading users...');
+        const response = await fetch(`${api}/users`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const usersData = await response.json();
+        console.log('Users loaded:', usersData.length);
+        currentUsers = Array.isArray(usersData) ? usersData : [];
+        
+        // Load user stats
+        await loadUserStats();
+        
+        // Load suggestions
+        loadSuggestions();
+        
+        // Load stories
+        await loadStories();
+        
+        // Load online friends
+        loadOnlineFriends();
+        
+      } catch (error) {
+        console.error('Error loading users:', error);
+        showMessage('Failed to load users: ' + error.message, 'error');
+        currentUsers = [];
+      }
+    }
+    
+    // Load user stats
+    async function loadUserStats() {
+      if (!currentUser) return;
+      
+      try {
+        const userResponse = await fetch(`${api}/users/${currentUser.id}`);
+        if (userResponse.ok) {
+          const userData = await userResponse.json();
+          document.getElementById('postsCount').textContent = userData.postsCount || 0;
+          document.getElementById('followersCount').textContent = userData.followersCount || 0;
+          document.getElementById('followingCount').textContent = userData.followingCount || 0;
+        } else {
+          // If specific user endpoint fails, calculate from general data
+          const postsResponse = await fetch(`${api}/posts?userId=${currentUser.id}`);
+          const followersResponse = await fetch(`${api}/followers/${currentUser.id}`);
+          const followingResponse = await fetch(`${api}/following/${currentUser.id}`);
+          
+          const posts = postsResponse.ok ? await postsResponse.json() : [];
+          const followers = followersResponse.ok ? await followersResponse.json() : [];
+          const following = followingResponse.ok ? await followingResponse.json() : [];
+          
+          document.getElementById('postsCount').textContent = posts.length || 0;
+          document.getElementById('followersCount').textContent = followers.length || 0;
+          document.getElementById('followingCount').textContent = following.length || 0;
+        }
+        
+      } catch (error) {
+        console.error('Error loading user stats:', error);
+        // Set default values
+        document.getElementById('postsCount').textContent = '0';
+        document.getElementById('followersCount').textContent = '0';
+        document.getElementById('followingCount').textContent = '0';
+      }
+    }
+    
+    // Load suggestions
+    async function loadSuggestions() {
+      if (!currentUser || !currentUsers.length) {
+        document.getElementById('suggestionsList').innerHTML = '<div class="text-muted">No suggestions available</div>';
+        return;
+      }
+      
+      try {
+        // Get current user's following list
+        let following = [];
+        try {
+          const followingResponse = await fetch(`${api}/following/${currentUser.id}`);
+          if (followingResponse.ok) {
+            following = await followingResponse.json();
+          }
+        } catch (e) {
+          console.log('Could not load following list');
+        }
+        
+        const followingIds = following.map(f => f.followedId);
+        
+        // Filter out current user and users already followed
+        const suggestions = currentUsers.filter(user => 
+          user.id !== currentUser.id && !followingIds.includes(user.id)
+        ).slice(0, 5);
+        
+        if (suggestions.length === 0) {
+          document.getElementById('suggestionsList').innerHTML = '<div class="text-muted">No suggestions available</div>';
+          return;
+        }
+        
+        const suggestionsHTML = suggestions.map(user => `
+          <div class="suggestion-card">
+            <div class="user-avatar">${user.username ? user.username.charAt(0).toUpperCase() : 'U'}</div>
+            <div class="suggestion-info">
+              <div class="suggestion-username">${user.username || 'Unknown User'}</div>
+              <div class="suggestion-fullname">${user.fullName || user.email || ''}</div>
+            </div>
+            <button class="btn btn-primary btn-sm btn-follow" data-user-id="${user.id}">
+              Follow
+            </button>
+          </div>
+        `).join('');
+        
+        document.getElementById('suggestionsList').innerHTML = suggestionsHTML;
+        
+        // Add event listeners to follow buttons
+        document.querySelectorAll('.btn-follow').forEach(btn => {
+          btn.addEventListener('click', async function() {
+            const userId = this.getAttribute('data-user-id');
+            await followUser(userId, this);
+          });
+        });
+        
+      } catch (error) {
+        console.error('Error loading suggestions:', error);
+        document.getElementById('suggestionsList').innerHTML = '<div class="text-muted">Error loading suggestions</div>';
+      }
+    }
+    
+    // Follow user function
+    async function followUser(userId, button) {
+      try {
+        const response = await fetch(`${api}/followers`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            followerId: currentUser.id,
+            followedId: userId
+          })
+        });
+        
+        if (response.ok) {
+          showMessage('Followed successfully!');
+          button.textContent = 'Following';
+          button.classList.remove('btn-primary');
+          button.classList.add('btn-outline-secondary');
+          button.disabled = true;
+          
+          // Update following count
+          await loadUserStats();
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to follow user');
+        }
+      } catch (error) {
+        console.error('Error following user:', error);
+        showMessage(error.message, 'error');
+      }
+    }
+    
+    // Load stories
+    async function loadStories() {
+      try {
+        const response = await fetch(`${api}/stories`);
+        if (!response.ok) throw new Error('Failed to load stories');
+        
+        const stories = await response.json();
+        
+        let storiesHTML = `
+          <div class="story-item" onclick="showMessage('Create story feature coming soon!')">
+            <div class="new-story">
+              <i class="fas fa-plus"></i>
+            </div>
+            <div class="story-username">Your Story</div>
+          </div>
+        `;
+        
+        // Add stories from other users (up to 7)
+        const validStories = stories.slice(0, 7);
+        
+        if (validStories.length > 0) {
+          storiesHTML += validStories.map(story => `
+            <div class="story-item" onclick="viewStory('${story.id}')">
+              <div class="story-avatar">
+                <div class="story-avatar-inner">
+                  ${story.username ? story.username.charAt(0).toUpperCase() : 'U'}
+                </div>
+              </div>
+              <div class="story-username">${story.username || 'Unknown User'}</div>
+            </div>
+          `).join('');
+        }
+        
+        document.getElementById('storiesContainer').innerHTML = storiesHTML;
+        
+      } catch (error) {
+        console.error('Error loading stories:', error);
+        // Fallback to user-based stories if API fails
+        loadFallbackStories();
+      }
+    }
+    
+    // Fallback stories based on users
+    function loadFallbackStories() {
+      if (!currentUsers.length) {
+        document.getElementById('storiesContainer').innerHTML = `
+          <div class="story-item" onclick="showMessage('Create story feature coming soon!')">
+            <div class="new-story">
+              <i class="fas fa-plus"></i>
+            </div>
+            <div class="story-username">Your Story</div>
+          </div>
+          <div class="text-muted">No stories available</div>
+        `;
+        return;
+      }
+      
+      let storiesHTML = `
+        <div class="story-item" onclick="showMessage('Create story feature coming soon!')">
+          <div class="new-story">
+            <i class="fas fa-plus"></i>
+          </div>
+          <div class="story-username">Your Story</div>
+        </div>
+      `;
+      
+      // Add stories from other users (up to 7)
+      const storyUsers = currentUsers
+        .filter(user => user.id !== currentUser.id)
+        .slice(0, 7);
+      
+      if (storyUsers.length > 0) {
+        storiesHTML += storyUsers.map(user => `
+          <div class="story-item" onclick="viewUserStory('${user.id}')">
+            <div class="story-avatar">
+              <div class="story-avatar-inner">
+                ${user.username.charAt(0).toUpperCase()}
+              </div>
+            </div>
+            <div class="story-username">${user.username}</div>
+          </div>
+        `).join('');
+      }
+      
+      document.getElementById('storiesContainer').innerHTML = storiesHTML;
+    }
+    
+    // Story view functions
+    function viewStory(storyId) {
+      showMessage('Viewing story...');
+    }
+    
+    function viewUserStory(userId) {
+      showMessage('Viewing user story...');
+    }
+    
+    // Load online friends
+    function loadOnlineFriends() {
+      if (!currentUsers.length) {
+        document.getElementById('onlineFriendsList').innerHTML = '<div class="text-muted">No friends online</div>';
+        return;
+      }
+      
+      // Show users who are marked as online or recently active
+      const onlineFriends = currentUsers
+        .filter(user => user.id !== currentUser.id && (user.isOnline || isRecentlyActive(user)))
+        .slice(0, 5);
+      
+      if (onlineFriends.length === 0) {
+        document.getElementById('onlineFriendsList').innerHTML = '<div class="text-muted">No friends online</div>';
+        return;
+      }
+      
+      const onlineFriendsHTML = onlineFriends.map(user => `
+        <div class="d-flex align-items-center mb-2">
+          <div class="position-relative">
+            <div class="user-avatar">${user.username.charAt(0).toUpperCase()}</div>
+            <span class="position-absolute bottom-0 end-0 p-1 bg-success border border-white rounded-circle"></span>
+          </div>
+          <div class="ms-2">
+            <div class="fw-bold">${user.username}</div>
+            <small class="text-muted">${user.isOnline ? 'Active now' : 'Recently active'}</small>
+          </div>
+        </div>
+      `).join('');
+      
+      document.getElementById('onlineFriendsList').innerHTML = onlineFriendsHTML;
+    }
+    
+    // Check if user was recently active (within last 10 minutes)
+    function isRecentlyActive(user) {
+      if (!user.lastSeen) return false;
+      try {
+        const lastSeen = new Date(user.lastSeen);
+        const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
+        return lastSeen > tenMinutesAgo;
+      } catch (e) {
+        return false;
+      }
+    }
+    
+    // Load posts
+    async function loadPosts() {
+      try {
+        showLoadingPosts();
+        
+        console.log('Fetching posts from:', `${api}/posts`);
+        const response = await fetch(`${api}/posts`);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const postsData = await response.json();
+        console.log('Posts loaded:', postsData.length);
+        
+        posts = Array.isArray(postsData) ? postsData : [];
+        
+        // Display posts
+        displayPosts();
+        
+      } catch (error) {
+        console.error('Error loading posts:', error);
+        showMessage('Failed to load posts: ' + error.message, 'error');
+        showErrorState(error);
+      }
+    }
+    
+    // Show loading state for posts
+    function showLoadingPosts() {
+      document.getElementById('postsFeed').innerHTML = `
+        <div class="main-content text-center py-5">
+          <div class="spinner-border text-primary mb-3" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <h5>Loading posts...</h5>
+          <p class="text-muted">Please wait while we fetch the latest posts</p>
+        </div>
+      `;
+    }
+    
+    // Show error state
+    function showErrorState(error) {
+      document.getElementById('postsFeed').innerHTML = `
+        <div class="main-content text-center py-5">
+          <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+          <h5>Failed to load posts</h5>
+          <p class="text-muted">${error.message || 'Please check your connection and try again'}</p>
+          <div class="mt-3">
+            <button class="btn btn-primary me-2" onclick="loadPosts()">
+              <i class="fas fa-redo me-1"></i> Try Again
+            </button>
+            <button class="btn btn-outline-secondary" onclick="checkServerHealth()">
+              <i class="fas fa-server me-1"></i> Check Server
+            </button>
+          </div>
+          <div class="mt-3">
+            <small class="text-muted">
+              Make sure the backend server is running on http://localhost:5000
+            </small>
+          </div>
+        </div>
+      `;
+    }
+    
+    // Display posts
+    function displayPosts() {
+      if (!posts.length) {
+        document.getElementById('postsFeed').innerHTML = `
+          <div class="main-content text-center py-5">
+            <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
+            <h5>No posts yet</h5>
+            <p class="text-muted">Be the first to share something!</p>
+            <button class="btn btn-primary mt-2" onclick="document.getElementById('createPostModal').show()">
+              <i class="fas fa-plus me-1"></i> Create First Post
+            </button>
+          </div>
+        `;
+        return;
+      }
+      
+      const postsHTML = posts.map(post => {
+        // Format date
+        let formattedDate = 'Unknown date';
+        try {
+          const postDate = new Date(post.createdAt);
+          formattedDate = postDate.toLocaleDateString() + ' at ' + postDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        } catch (e) {
+          console.error('Error formatting date:', e);
+        }
+        
+        // Check if current user liked this post
+        const isLiked = post.likes && Array.isArray(post.likes) && post.likes.includes(currentUser.id);
+        
+        return `
+          <div class="main-content post-item" id="post-${post.id}">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <div class="d-flex align-items-center">
+                <div class="user-avatar">${post.username ? post.username.charAt(0).toUpperCase() : 'U'}</div>
+                <div class="ms-3">
+                  <div class="fw-bold">${post.username || 'Unknown User'}</div>
+                  <small class="text-muted">${formattedDate}</small>
+                </div>
+              </div>
+              <div class="dropdown">
+                <button class="btn btn-sm" type="button" id="postDropdown-${post.id}" data-bs-toggle="dropdown">
+                  <i class="fas fa-ellipsis-h"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="#"><i class="fas fa-bookmark me-2"></i>Save</a></li>
+                  <li><a class="dropdown-item" href="#"><i class="fas fa-flag me-2"></i>Report</a></li>
+                  ${post.userId === currentUser.id ? `
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" href="#" onclick="deletePost('${post.id}')"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                  ` : ''}
+                </ul>
+              </div>
+            </div>
+            
+            ${post.content ? `<div class="mb-3">${post.content}</div>` : ''}
+            
+            ${post.media && post.media.length > 0 ? `
+              <div class="post-media mb-3">
+                ${post.media.map(media => {
+                  if (media.type === 'image') {
+                    return `<img src="${media.url}" alt="${media.caption || 'Post image'}" class="post-image" onerror="this.style.display='none'">`;
+                  } else if (media.type === 'video') {
+                    return `
+                      <video controls class="post-video">
+                        <source src="${media.url}" type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
+                    `;
+                  }
+                  return '';
+                }).join('')}
+              </div>
+            ` : ''}
+            
+            ${post.mood ? `<div class="mb-2"><span class="badge bg-info">${post.mood}</span></div>` : ''}
+            
+            ${post.location && post.location.name ? `<div class="mb-2"><small class="text-muted"><i class="fas fa-map-marker-alt me-1"></i>${post.location.name}</small></div>` : ''}
+            
+            ${post.hashtags && post.hashtags.length > 0 ? `
+              <div class="mb-2">
+                ${post.hashtags.map(tag => `<span class="badge bg-light text-dark me-1">#${tag}</span>`).join('')}
+              </div>
+            ` : ''}
+            
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post.id}', this)">
+                  <i class="fas fa-heart"></i>
+                </button>
+                <button class="action-btn" onclick="toggleComments('${post.id}')">
+                  <i class="fas fa-comment"></i>
+                </button>
+                <button class="action-btn" onclick="sharePost('${post.id}')">
+                  <i class="fas fa-share"></i>
+                </button>
+              </div>
+              <button class="action-btn" onclick="savePost('${post.id}')">
+                <i class="fas fa-bookmark"></i>
+              </button>
+            </div>
+            
+            <div class="mb-2">
+              <span class="fw-bold">${post.likesCount || 0} likes</span>
+              ${post.comments && post.comments.length > 0 ? `
+                <span class="fw-bold ms-2">${post.comments.length} comments</span>
+              ` : ''}
+            </div>
+            
+            <div id="comments-${post.id}" style="display: none;">
+              <div class="mt-3 mb-2" id="comments-list-${post.id}">
+                ${generateComments(post)}
+              </div>
+              
+              <div class="d-flex mt-2">
+                <div class="user-avatar">${currentUser.username ? currentUser.username.charAt(0).toUpperCase() : 'U'}</div>
+                <input type="text" class="form-control ms-2" placeholder="Add a comment..." id="comment-input-${post.id}">
+                <button class="btn btn-primary ms-2" onclick="addComment('${post.id}')">Post</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      
+      document.getElementById('postsFeed').innerHTML = postsHTML;
+    }
+    
+    // Generate comments for a post
+    function generateComments(post) {
+      if (!post.comments || !Array.isArray(post.comments) || post.comments.length === 0) {
+        return '<div class="text-muted">No comments yet. Be the first to comment!</div>';
+      }
+      
+      return post.comments.map(comment => `
+        <div class="mb-2 comment-item">
+          <div class="fw-bold">${comment.username || 'Unknown User'}</div>
+          <div>${comment.content}</div>
+          <small class="text-muted">${new Date(comment.createdAt).toLocaleDateString()}</small>
+        </div>
+      `).join('');
+    }
+    
+    // Toggle like on a post
+    async function toggleLike(postId, button) {
+      try {
+        const isCurrentlyLiked = button.classList.contains('liked');
+        
+        if (isCurrentlyLiked) {
+          // Unlike the post
+          const response = await fetch(`${api}/likes`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              userId: currentUser.id,
+              targetId: postId,
+              targetType: 'post'
+            })
+          });
+          
+          if (response.ok) {
+            button.classList.remove('liked');
+            showMessage('Post unliked');
+            updateLikeCount(postId, -1);
+          } else {
+            throw new Error('Failed to unlike post');
+          }
+        } else {
+          // Like the post
+          const response = await fetch(`${api}/likes`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              userId: currentUser.id,
+              targetId: postId,
+              targetType: 'post'
+            })
+          });
+          
+          if (response.ok) {
+            button.classList.add('liked');
+            showMessage('Post liked!');
+            updateLikeCount(postId, 1);
+          } else {
+            throw new Error('Failed to like post');
+          }
+        }
+      } catch (error) {
+        console.error('Error toggling like:', error);
+        showMessage('Error updating like: ' + error.message, 'error');
+      }
+    }
+    
+    // Update like count display
+    function updateLikeCount(postId, change) {
+      const likeCountElement = document.querySelector(`#post-${postId} .fw-bold`);
+      if (likeCountElement) {
+        const currentText = likeCountElement.textContent;
+        const currentCount = parseInt(currentText) || 0;
+        const newCount = Math.max(0, currentCount + change);
+        likeCountElement.textContent = `${newCount} likes`;
+      }
+    }
+    
+    // Toggle comments section
+    async function toggleComments(postId) {
+      const commentsSection = document.getElementById(`comments-${postId}`);
+      const isVisible = commentsSection.style.display === 'block';
+      
+      if (!isVisible) {
+        // Load comments if not already loaded
+        await loadComments(postId);
+      }
+      
+      commentsSection.style.display = isVisible ? 'none' : 'block';
+    }
+    
+    // Load comments for a post
+    async function loadComments(postId) {
+      try {
+        const response = await fetch(`${api}/comments/post/${postId}`);
+        if (response.ok) {
+          const comments = await response.json();
+          const commentsList = document.getElementById(`comments-list-${postId}`);
+          if (commentsList) {
+            commentsList.innerHTML = comments.map(comment => `
+              <div class="mb-2 comment-item">
+                <div class="fw-bold">${comment.username || 'Unknown User'}</div>
+                <div>${comment.content}</div>
+                <small class="text-muted">${new Date(comment.createdAt).toLocaleDateString()}</small>
+              </div>
+            `).join('') || '<div class="text-muted">No comments yet. Be the first to comment!</div>';
+          }
+        }
+      } catch (error) {
+        console.error('Error loading comments:', error);
+        const commentsList = document.getElementById(`comments-list-${postId}`);
+        if (commentsList) {
+          commentsList.innerHTML = '<div class="text-muted">Error loading comments</div>';
+        }
+      }
+    }
+    
+    // Add comment to a post
+    async function addComment(postId) {
+      const commentInput = document.getElementById(`comment-input-${postId}`);
+      const commentText = commentInput.value.trim();
+      
+      if (!commentText) {
+        showMessage('Please enter a comment', 'error');
+        return;
+      }
+      
+      try {
+        const response = await fetch(`${api}/comments`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            postId: postId,
+            userId: currentUser.id,
+            content: commentText
+          })
+        });
+        
+        if (response.ok) {
+          const newComment = await response.json();
+          showMessage('Comment added!');
+          commentInput.value = '';
+          
+          // Add the new comment to the list
+          const commentsList = document.getElementById(`comments-list-${postId}`);
+          if (commentsList) {
+            const commentHTML = `
+              <div class="mb-2 comment-item">
+                <div class="fw-bold">${newComment.username || currentUser.username}</div>
+                <div>${newComment.content}</div>
+                <small class="text-muted">Just now</small>
+              </div>
+            `;
+            commentsList.innerHTML = commentHTML + commentsList.innerHTML;
+          }
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to add comment');
+        }
+      } catch (error) {
+        console.error('Error adding comment:', error);
+        showMessage(error.message, 'error');
+      }
+    }
+    
+    // Delete a post
+    async function deletePost(postId) {
+      if (!confirm('Are you sure you want to delete this post?')) return;
+      
+      try {
+        const response = await fetch(`${api}/posts/${postId}`, {
+          method: 'DELETE'
+        });
+        
+        if (response.ok) {
+          showMessage('Post deleted successfully!');
+          // Remove post from DOM
+          const postElement = document.getElementById(`post-${postId}`);
+          if (postElement) {
+            postElement.remove();
+          }
+          // Reload user stats
+          await loadUserStats();
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to delete post');
+        }
+      } catch (error) {
+        console.error('Error deleting post:', error);
+        showMessage(error.message, 'error');
+      }
+    }
+    
+    // Handle media file selection
+    function handleMediaSelection(files) {
+      const mediaPreview = document.getElementById('mediaPreview');
+      const mediaPreviewContainer = document.getElementById('mediaPreviewContainer');
+      
+      if (!files || files.length === 0) {
+        mediaPreview.style.display = 'none';
+        selectedFiles = [];
+        return;
+      }
+      
+      // Clear previous previews
+      mediaPreviewContainer.innerHTML = '';
+      selectedFiles = Array.from(files);
+      
+      // Show preview for each file
+      selectedFiles.forEach((file, index) => {
+        const previewItem = document.createElement('div');
+        previewItem.className = 'media-preview-item';
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'remove-media-btn';
+        removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+        removeBtn.onclick = () => removeMediaFile(index);
+        
+        const typeBadge = document.createElement('div');
+        typeBadge.className = 'media-type-badge';
+        typeBadge.textContent = file.type.startsWith('image/') ? 'IMAGE' : 'VIDEO';
+        
+        if (file.type.startsWith('image/')) {
+          const img = document.createElement('img');
+          img.src = URL.createObjectURL(file);
+          previewItem.appendChild(img);
+        } else if (file.type.startsWith('video/')) {
+          const video = document.createElement('video');
+          video.src = URL.createObjectURL(file);
+          video.controls = true;
+          previewItem.appendChild(video);
+        }
+        
+        previewItem.appendChild(removeBtn);
+        previewItem.appendChild(typeBadge);
+        mediaPreviewContainer.appendChild(previewItem);
+      });
+      
+      mediaPreview.style.display = 'block';
+    }
+    
+    // Remove media file from selection
+    function removeMediaFile(index) {
+      selectedFiles.splice(index, 1);
+      const mediaUpload = document.getElementById('mediaUpload');
+      
+      // Update the file input
+      const dt = new DataTransfer();
+      selectedFiles.forEach(file => dt.items.add(file));
+      mediaUpload.files = dt.files;
+      
+      // Refresh preview
+      handleMediaSelection(selectedFiles);
+    }
+    
+    // Create post with media upload
+    async function createPost(content) {
+      try {
+        const visibility = document.getElementById('postVisibility').value;
+        const mood = document.getElementById('postMood').value;
+        const location = document.getElementById('postLocation').value;
+        const hashtags = document.getElementById('postHashtags').value;
+        const hasMedia = selectedFiles.length > 0;
+        
+        if (!content && !hasMedia) {
+          showMessage('Please enter some content or add media for your post', 'error');
+          return;
+        }
+        
+        // Show upload progress
+        const uploadProgress = document.getElementById('uploadProgress');
+        const uploadProgressBar = document.getElementById('uploadProgressBar');
+        uploadProgress.style.display = 'block';
+        uploadProgressBar.style.width = '0%';
+        
+        // Create FormData for file upload
+        const formData = new FormData();
+        formData.append('userId', currentUser.id);
+        formData.append('content', content || '');
+        formData.append('visibility', visibility);
+        
+        if (mood) formData.append('mood', mood);
+        if (location) formData.append('location', JSON.stringify({ name: location }));
+        if (hashtags) formData.append('hashtags', hashtags);
+        
+        // Append media files
+        selectedFiles.forEach(file => {
+          formData.append('media', file);
+        });
+        
+        // Simulate upload progress
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+          progress += 5;
+          uploadProgressBar.style.width = `${progress}%`;
+          if (progress >= 90) clearInterval(progressInterval);
+        }, 100);
+        
+        const response = await fetch(`${api}/posts`, {
+          method: 'POST',
+          body: formData
+        });
+        
+        clearInterval(progressInterval);
+        uploadProgressBar.style.width = '100%';
+        
+        if (response.ok) {
+          showMessage('Post created successfully!');
+          resetPostForm();
+          createPostModal.hide();
+          await loadPosts();
+          await loadUserStats();
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to create post');
+        }
+      } catch (error) {
+        console.error('Error creating post:', error);
+        showMessage('Error creating post: ' + error.message, 'error');
+      } finally {
+        // Hide progress bar
+        setTimeout(() => {
+          const uploadProgress = document.getElementById('uploadProgress');
+          if (uploadProgress) {
+            uploadProgress.style.display = 'none';
+          }
+        }, 1000);
+      }
+    }
+    
+    // Reset post form after submission
+    function resetPostForm() {
+      document.getElementById('modalPostContent').value = '';
+      document.getElementById('postMood').value = '';
+      document.getElementById('postLocation').value = '';
+      document.getElementById('postHashtags').value = '';
+      document.getElementById('mediaUpload').value = '';
+      document.getElementById('mediaPreview').style.display = 'none';
+      document.getElementById('mediaPreviewContainer').innerHTML = '';
+      document.getElementById('locationSection').style.display = 'none';
+      document.getElementById('moodSection').style.display = 'none';
+      selectedFiles = [];
+    }
+    
+    // Share post function
+    function sharePost(postId) {
+      showMessage('Share feature coming soon!');
+    }
+    
+    // Save post function
+    function savePost(postId) {
+      showMessage('Post saved!');
+    }
+    
+    // Initialize the app
+    async function initializeApp() {
+      if (!checkAuth()) return;
+      
+      // Check server health first
+      const isServerHealthy = await checkServerHealth();
+      if (!isServerHealthy) {
+        showErrorState(new Error('Server not available'));
+        return;
+      }
+      
+      initializeUserInfo();
+      await loadUsers();
+      await loadPosts();
+    }
+    
+    // Event listeners
+    document.addEventListener('DOMContentLoaded', initializeApp);
+    
+    // Logout
+       // Logout
+    document.getElementById('logoutLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.removeItem('currentUser');
+      window.location.href = 'register.html';
+    });
+    
+    // Profile links
+    document.getElementById('profileLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = `profile.html?id=${currentUser.id}`;
+    });
+    
+    document.getElementById('profileDropdownLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = `profile.html?id=${currentUser.id}`;
+    });
+    
+    document.getElementById('editProfileBtn').addEventListener('click', function(e) {
+      e.preventDefault();
+      window.location.href = `profile.html?id=${currentUser.id}&edit=true`;
+    });
+    
+    // Create post modal
+    const createPostModal = new bootstrap.Modal(document.getElementById('createPostModal'));
+    
+    document.getElementById('createPostBtn').addEventListener('click', function() {
+      createPostModal.show();
+    });
+    
+    document.getElementById('postContentInput').addEventListener('click', function() {
+      createPostModal.show();
+    });
+    
+    // Media upload handler
+    document.getElementById('selectMediaBtn').addEventListener('click', function() {
+      document.getElementById('mediaUpload').click();
+    });
+    
+    // Handle file selection
+    document.getElementById('mediaUpload').addEventListener('change', function(e) {
+      handleMediaSelection(e.target.files);
+    });
+    
+    // Location button in modal
+    document.getElementById('addLocationModalBtn').addEventListener('click', function() {
+      const locationSection = document.getElementById('locationSection');
+      locationSection.style.display = locationSection.style.display === 'none' ? 'block' : 'none';
+    });
+    
+    // Mood button in modal
+    document.getElementById('addMoodModalBtn').addEventListener('click', function() {
+      const moodSection = document.getElementById('moodSection');
+      moodSection.style.display = moodSection.style.display === 'none' ? 'block' : 'none';
+    });
+    
+    // Submit post button
+    document.getElementById('submitPostBtn').addEventListener('click', function() {
+      const content = document.getElementById('modalPostContent').value.trim();
+      createPost(content);
+    });
+    
+    // Media buttons in main content
+    document.getElementById('addPhotoBtn').addEventListener('click', function() {
+      createPostModal.show();
+      setTimeout(() => {
+        document.getElementById('mediaUpload').click();
+      }, 500);
+    });
+    
+    document.getElementById('addVideoBtn').addEventListener('click', function() {
+      createPostModal.show();
+      setTimeout(() => {
+        document.getElementById('mediaUpload').click();
+      }, 500);
+    });
+    
+    document.getElementById('addLocationBtn').addEventListener('click', function() {
+      createPostModal.show();
+      setTimeout(() => {
+        document.getElementById('locationSection').style.display = 'block';
+        document.getElementById('postLocation').focus();
+      }, 500);
+    });
+    
+    document.getElementById('addMoodBtn').addEventListener('click', function() {
+      createPostModal.show();
+      setTimeout(() => {
+        document.getElementById('moodSection').style.display = 'block';
+        document.getElementById('postMood').focus();
+      }, 500);
+    });
+    
+    // Refresh data every 30 seconds
+    setInterval(async () => {
+      if (currentUser) {
+        try {
+          await loadPosts();
+          await loadUsers();
+        } catch (error) {
+          console.error('Error refreshing data:', error);
+        }
+      }
+    }, 30000);
+
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+      // Ctrl+Enter or Cmd+Enter to submit post
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        const modal = document.getElementById('createPostModal');
+        if (modal && modal.style.display !== 'none') {
+          const content = document.getElementById('modalPostContent').value.trim();
+          const hasMedia = selectedFiles.length > 0;
+          if (content || hasMedia) {
+            createPost(content);
+          }
+        }
+      }
+      
+      // Escape to close modal
+      if (e.key === 'Escape') {
+        const modal = bootstrap.Modal.getInstance(document.getElementById('createPostModal'));
+        if (modal) {
+          modal.hide();
+        }
+      }
+    });
+
+    // Add service worker for offline support (optional)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+          .then(function(registration) {
+            console.log('ServiceWorker registration successful');
+          })
+          .catch(function(error) {
+            console.log('ServiceWorker registration failed: ', error);
+          });
+      });
+    }
+
+    // Add offline/online detection
+    window.addEventListener('online', function() {
+      showMessage('Connection restored', 'success');
+      initializeApp();
+    });
+
+    window.addEventListener('offline', function() {
+      showMessage('You are currently offline', 'warning');
+    });
+
+    // Add retry mechanism for failed requests
+    async function fetchWithRetry(url, options = {}, retries = 3) {
+      try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response;
+      } catch (error) {
+        if (retries > 0) {
+          console.log(`Retrying request... ${retries} attempts left`);
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          return fetchWithRetry(url, options, retries - 1);
+        }
+        throw error;
+      }
+    }
+
+    // Enhanced fetch function with better error handling
+    async function enhancedFetch(url, options = {}) {
+      try {
+        const response = await fetchWithRetry(url, options);
+        return response;
+      } catch (error) {
+        console.error('Fetch failed:', error);
+        throw new Error(`Network error: ${error.message}`);
+      }
+    }
+
+    // Update all fetch calls to use enhancedFetch
+    // Note: You would need to replace all fetch() calls with enhancedFetch() in the actual implementation
+
+  </script>
+</body>
+</html>
